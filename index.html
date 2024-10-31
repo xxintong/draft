@@ -5,79 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Drink What?</title>
     <style>
-        /* 重置样式 */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        /* 主体内容样式 */
         body {
             font-family: Arial, sans-serif;
-            padding-bottom: 60px; /* 给底部导航栏留出空间 */
+            padding-bottom: 60px; 
         }
-
-        /* 底部导航栏样式 */
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 60px;
-            background-color:#666666;
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+            height: 100px;
+            background-color: #e0e0e0;
             display: flex;
             justify-content: space-around;
             align-items: center;
             border-top: 1px solid #ddd;
-            z-index: 1000;
         }
-
-        /* 导航栏中的每个图标或文字样式 */
         .bottom-nav a {
             text-decoration: none;
-            color: #ddd;
-            font-size: 14px;
+            color: #666666; /* 初始颜色 */
+            font-size: 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
+			margin-bottom:30px;
+            transition: color 0.3s;
         }
-
-        /* 图标样式 */
-        .bottom-nav a .icon {
-            font-size: 24px;
-            margin-bottom: 5px;
+        .bottom-nav a img {
+            width: 24px;
+            height: 24px;
+            filter: brightness(0) saturate(100%) invert(40%); /* 默认颜色为 #666666 */
+            transition: filter 0.3s;
+        }
+        .bottom-nav a.active img {
+            filter: brightness(0) saturate(100%) invert(0%); /* 点击后的颜色为 #000000 */
+        }
+        .bottom-nav a.active {
+            color: #000000;
         }
     </style>
 </head>
 <body>
-
-    
-
     <!-- 底部导航栏 -->
     <div class="bottom-nav">
-        <a href="#">
-            <span class="icon">🏠</span>
-            <span>Home</span>
+        <a href="index.html" class="nav-link active">
+            <img src="images/shouye.svg" alt="首页">
+            <span>首页</span>
         </a>
-        <a href="#">
-            <span class="icon">🔍</span>
-            <span>Search</span>
+        <a href="search.html" class="nav-link">
+            <img src="images/sousuo.svg" alt="分类">
+            <span>分类</span>
         </a>
-        <a href="#">
-            <span class="icon">🧋</span>
-            <span>Brand</span>
+        <a href="brand.html" class="nav-link">
+            <img src="images/zhenzhunaicha.svg" alt="奶茶">
+            <span>品牌</span>
         </a>
-        <a href="#">
-            <span class="icon">✔️</span>
-            <span>Random</span>
+        <a href="random.html" class="nav-link">
+            <img src="images/chouxuan.svg" alt="随机">
+            <span>随机</span>
         </a>
-        <a href="#">
-            <span class="icon">👤</span>
-            <span>My</span>
+        <a href="my.html" class="nav-link">
+            <img src="images/wode.svg" alt="我的">
+            <span>我的</span>
         </a>
     </div>
-
 </body>
 </html>
