@@ -28,7 +28,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-	    margin-bottom:20px;
+			margin-bottom:20px;
             transition: color 0.3s;
         }
         .bottom-nav a img {
@@ -43,6 +43,57 @@
         .bottom-nav a.active {
             color: #000000;
         }
+		.carousel-container {
+		    width: 100%;
+		    max-width: 600px;
+	        overflow: hidden;	            
+			position: relative;
+		    border-radius: 10px;
+		    margin: 20px auto;
+		}
+		
+		.carousel {
+		    display: flex;
+		    transition: transform 0.5s ease;
+		}
+		
+		.carousel img {
+		    width: 100%;
+			height:230px;
+	        object-fit: cover;
+            border-radius: 10px;
+        }
+		
+		/* 小圆点指示器样式 */
+		.carousel-indicators {
+		    position: absolute;
+		    bottom: 10px;
+	        left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+        }
+		
+		.carousel-indicators span {
+            width: 8px;
+	        height: 8px;
+            background-color: #ddd;
+	        border-radius: 50%;
+	        cursor: pointer;
+		}
+		
+		.carousel-indicators span.active {
+		    background-color: #333;
+		}
+		
+		.carousel .slide {
+		    width: 100%; /* 确保每个 slide 占据容器的全部宽度 */
+		    height: 100%;
+		    background-size: cover;
+		    background-repeat: no-repeat;
+		    background-position: center;
+		    flex-shrink: 0; /* 防止 slide 收缩 */
+		}
     </style>
 </head>
 <body>
@@ -69,5 +120,78 @@
             <span>我的</span>
         </a>
     </div>
+	<div class="carousel-container">
+	    <div class="carousel">
+	        <img src="images/IMG_9385.jpeg" alt="活动1">
+	        <img src="images/IMG_6815.jpeg" alt="活动2">
+	        <img src="images/IMG_4846.jpeg" alt="活动3">
+	    </div>
+	    <!-- 小圆点指示器 -->
+	    <div class="carousel-indicators">
+	        <span data-index="0" class="active"></span>
+	        <span data-index="1"></span>
+	        <span data-index="2"></span>
+	    </div>
+	</div>
+	
+	<script>
+	    // JavaScript 实现轮播图自动播放
+	    const carousel = document.querySelector('.carousel');
+	    const indicators = document.querySelectorAll('.carousel-indicators span');
+	    let currentIndex = 0;
+	
+	    function showSlide(index) {
+	        // 更新轮播图位置
+	        carousel.style.transform = `translateX(-${index * 100}%)`;
+	        
+	        // 更新小圆点指示器的激活状态
+	        indicators.forEach(indicator => indicator.classList.remove('active'));
+	        indicators[index].classList.add('active');
+	    }
+	
+	    function nextSlide() {
+	        currentIndex = (currentIndex + 1) % indicators.length;
+	        showSlide(currentIndex);
+	    }
+	
+	    // 自动播放轮播图
+	    let slideInterval = setInterval(nextSlide, 3000);
+	
+	    // 添加指示器点击事件
+	    indicators.forEach(indicator => {
+	        indicator.addEventListener('click', () => {
+	            clearInterval(slideInterval); // 停止自动播放
+	            currentIndex = parseInt(indicator.getAttribute('data-index'));
+	            showSlide(currentIndex);
+	            slideInterval = setInterval(nextSlide, 3000); // 重启自动播放
+	        });
+	    });
+        // 触摸滑动事件
+        carousel.addEventListener('touchstart', (e) => {
+            clearInterval(slideInterval); // 暂停自动播放
+            startX = e.touches[0].clientX;
+            isDragging = true;
+        });
+
+        carousel.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            endX = e.touches[0].clientX;
+        });
+
+        carousel.addEventListener('touchend', () => {
+            if (!isDragging) return;
+            isDragging = false;
+
+        // 判断滑动方向
+            if (startX > endX + 50) { // 向左滑动
+                nextSlide();
+            } else if (startX < endX - 50) { // 向右滑动
+                prevSlide();
+            }
+
+            slideInterval = setInterval(nextSlide, 3000); // 重启自动播放
+        });
+	</script>
+
 </body>
 </html>
