@@ -55,6 +55,7 @@
 		.carousel {
 		    display: flex;
 		    transition: transform 0.5s ease;
+			
 		}
 		
 		.carousel img {
@@ -94,6 +95,103 @@
 		    background-position: center;
 		    flex-shrink: 0; /* 防止 slide 收缩 */
 		}
+		 /* 设置每张图片的背景 */
+		.carousel .slide1 {
+		    background-image: url('images/banner1.jpg');
+		    background-position: center top;
+		}
+		
+		.carousel .slide2 {
+		    background-image: url('images/banner2.jpg');
+		    background-position: center top;
+		}
+		
+		.carousel .slide3 {
+		    background-image: url('images/banner3.jpg');
+		    background-position: center center;
+		}
+			
+		/* 两个卡片 */	
+        .card-section {
+            width: 90%;
+            max-width: 600px;
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+			margin-top: -20px;;
+        }
+
+        .cards {
+            display: flex;
+            justify-content: space-between;
+			gap:15px;
+            width: 100%;
+        }
+
+        .divider {
+            width: 1px;
+            background-color: #ddd;
+            position: absolute;
+            top: 20px;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .card {
+            width: 48%; /* 每个卡片占一半宽度，留出间隙 */
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s;
+            position: relative;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .card img {
+            width: 100%;
+			height:180px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            color: #333;
+            margin: 10px 0 5px;
+        }
+
+        .tag1 {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #bfbfbf; 
+            color: #333333;
+            padding: 2px 8px;
+            font-size: 12px;
+            border-radius: 5px;
+        }
+        .tag2 {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #E6C3A1;
+            color: #333333;
+            padding: 2px 8px;
+            font-size: 12px;
+            border-radius: 5px;
+        }
+
     </style>
 </head>
 <body>
@@ -120,6 +218,8 @@
             <span>我的</span>
         </a>
     </div>
+	
+	<!--照片展示-->
 	<div class="carousel-container">
 	    <div class="carousel">
 	        <img src="images/IMG_9385.jpeg" alt="活动1">
@@ -133,7 +233,28 @@
 	        <span data-index="2"></span>
 	    </div>
 	</div>
-	
+	<div class="card-section">
+	    <!-- 中间的竖线 -->
+	    <div class="divider"></div>
+	<!-- 双卡片部分 -->
+	    <div class="cards">
+	        <!-- 第一张卡片 -->
+	        <a href="search.html" class="card">
+	            <div class="tag1">分类</div>
+	            <img src="images/5581730728388_.pic.jpg" alt="Drink What?">
+	            <h3>Drink What?</h3>
+	        </a>
+	        
+	        <!-- 第二张卡片 -->
+	        <a href="random.html" class="card">
+	            <div class="tag2">随机</div>
+	            <img src="images/IMG_3630.JPG" alt="Get My Juice">
+	            <h3>Get My Juice.</h3>
+	        </a>
+	    </div>
+	</div>
+	</div>
+
 	<script>
 	    // JavaScript 实现轮播图自动播放
 	    const carousel = document.querySelector('.carousel');
