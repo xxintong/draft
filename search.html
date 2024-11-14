@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drink What?</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 85px;
+            background-color: #e0e0e0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid #ddd;
+        }
+        .bottom-nav a {
+            text-decoration: none;
+            color: #666666; /* 初始颜色 */
+            font-size: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+			margin-bottom:20px;
+            transition: color 0.3s;
+			-webkit-tap-highlight-color: rgba(0,0,0,0); /* 透明 */
+        }
+        .bottom-nav a img {
+            width: 24px;
+            height: 24px;
+            filter: brightness(0) saturate(100%) invert(40%); /* 默认颜色为 #666666 */
+            transition: filter 0.3s;
+        }
+        .bottom-nav a.active img {
+            filter: brightness(0) saturate(100%) invert(0%); /* 点击后的颜色为 #000000 */
+        }
+        .bottom-nav a.active {
+            color: #000000;
+        }
+		
+		/* 图标 */
+		.icon-container {
+		    display: flex;
+		    flex-wrap: wrap;
+		    gap: 20px; /* 间距调整为20px */
+		    margin: 20px;
+			margin-bottom: 100px;
+		}
+		
+		.icon {
+		        width: 100px;
+		        text-align: center;
+				
+		    }
+		
+		
+		
+		.icon img {
+		    width: 100px;  /* 根据需要调整图标大小 */
+		    height: 100px;
+		    object-fit: contain;
+		}
+		
+		.details {
+		    display: none;
+		    grid-column: span 3;
+		    background-color: #f0f0f0;
+		    padding: 20px;
+		    border-radius: 10px;
+		    margin-top: -20px;
+		    margin-bottom: 20px;
+		}
+		
+		.icon.active {
+		    background-color: #e0e0e0;
+		}
+        /* 分组标题 */
+        .section-title {
+            width: 100%; /* 占据整行 */
+            font-size: 14px;
+            font-weight: bold;
+            color: #000;
+            padding: 10px 0; /* 调整上下间距 */
+            margin-top: 10px; /* 标题与上一组图标间距 */
+            text-align: left; /* 左对齐 */
+            border-top: 1px solid #ddd; /* 可选：分隔线 */
+        }
+		
+		/*下拉菜单 */
+		.dropdown-menu {
+		    display: none; /* 默认隐藏 */
+		    padding: 10px 20px;
+		    width: 100%;
+		    box-sizing: border-box;
+		    border-bottom: 1px solid #ddd;
+		}
+		
+		.sub-dropdown {
+		    display: none; /* 默认隐藏 */
+		    padding: 5px 40px; /* 子菜单缩进 */
+		    border-top: 1px solid #e0e0e0;
+		}
+    </style>
+</head>
+<body>
+    <!-- 底部导航栏 -->
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-link">
+            <img src="images/shouye.svg" alt="首页">
+            <span>首页</span>
+        </a>
+        <a href="search.html" class="nav-link active">
+            <img src="images/sousuo.svg" alt="分类">
+            <span>分类</span>
+        </a>
+        <a href="brand.html" class="nav-link">
+            <img src="images/zhenzhunaicha.svg" alt="奶茶">
+            <span>品牌</span>
+        </a>
+        <a href="random.html" class="nav-link">
+            <img src="images/chouxuan.svg" alt="随机">
+            <span>随机</span>
+        </a>
+        <a href="my.html" class="nav-link">
+            <img src="images/wode.svg" alt="我的">
+            <span>我的</span>
+        </a>
+    </div>
+	
+	<!-- 图标 -->
+	<div class="icon-container">
+	
+	    <!-- B组 -->
+	    <div class="section-title">B</div>
+	    <div class="icon" onclick="toggleDetails('item_bawang_chaji')">
+	        <img src="icon/IMG_8114.PNG" alt="霸王茶姬">
+	        <p>霸王茶姬</p>
+	    </div>
+	    <div class="details" id="item_bawang_chaji">
+	        <p>这是霸王茶姬的详细内容。</p>
+	    </div>
+	    		
+	    <div class="icon" onclick="toggleDetails('item_baifen_cha')">
+	        <img src="icon/IMG_8185.PNG" alt="百分茶">
+	        <p>百分茶</p>
+	    </div>
+	    <div class="details" id="item_baifen_cha">
+	       <p>这是百分茶的详细内容。</p>
+	    </div>    
+	
+	    <!-- C组 -->
+	    <div class="section-title">C</div>
+	    <div class="icon" onclick="toggleDetails('item_chabaidao')">
+	        <img src="icon/IMG_8177.PNG" alt="茶百道">
+	        <p>茶百道</p>
+	    </div>
+	    <div class="details" id="item_chabaidao">
+	        <p>这是茶百道的详细内容。</p>
+	    </div>
+	    <div class="icon" onclick="toggleDetails('item_chayan_yueshe')">
+	        <img src="icon/IMG_8138.PNG" alt="茶颜悦色">
+	        <p>茶颜悦色</p>
+	    </div>
+	    <div class="details" id="item_chayan_yueshe">
+	        <p>这是茶颜悦色的详细内容。</p>
+	    </div>
+	    <div class="icon" onclick="toggleDetails('item_coco')">
+	        <img src="icon/WechatIMG578.jpg" alt="CoCo">
+	        <p>CoCo</p>
+	    </div>
+	    <div class="details" id="item_coco">
+	        <p>这是CoCo的详细内容。</p>
+	    </div>
+	
+	    <!-- G组 -->
+	    <div class="section-title">G</div>
+	    <div class="icon" onclick="toggleDetails('item_gongcha')">
+	        <img src="icon/IMG_8195.PNG" alt="贡茶">
+	        <p>贡茶</p>
+	    </div>
+	    <div class="details" id="item_gongcha">
+	        <p>这是贡茶的详细内容。</p>
+	    </div>
+		<div class="icon" onclick="toggleDetails('item_ancient_tea')">
+		    <img src="icon/IMG_8157.PNG" alt="古茗">
+		    <p>古茗</p>
+		</div>
+		<div class="details" id="item_ancient_tea">
+		    <p>这是古茗的详细内容。</p>
+		</div>
+	
+	    <!-- H组 -->
+	    <div class="section-title">H</div>
+	    <div class="icon" onclick="toggleDetails('item_hushang_ayi')">
+	        <img src="icon/IMG_8151.PNG" alt="沪上阿姨">
+	        <p>沪上阿姨</p>
+	    </div>
+	    <div class="details" id="item_hushang_ayi">
+	        <p>这是沪上阿姨的详细内容。</p>
+	    </div>
+	
+	    <!-- L组 -->
+	    <div class="section-title">L</div>
+	    <div class="icon" onclick="toggleDetails('item_lelecha')">
+	        <img src="icon/IMG_8181.PNG" alt="乐乐茶">
+	        <p>乐乐茶</p>
+	    </div>
+	    <div class="details" id="item_lelecha">
+	        <p>这是乐乐茶的详细内容。</p>
+	    </div>
+	
+	    <!-- M组 -->
+	    <div class="section-title">M</div>
+	    <div class="icon" onclick="toggleDetails('item_mawu_wang')">
+	        <img src="icon/IMG_8193.PNG" alt="马伍旺饮料厂">
+	        <p>马伍旺饮料厂</p>
+	    </div>
+	    <div class="details" id="item_mawu_wang">
+	        <p>这是马伍旺饮料厂的详细内容。</p>
+	    </div>
+	    <div class="icon" onclick="toggleDetails('item_mixuebingcheng')">
+	        <img src="icon/IMG_8131.PNG" alt="蜜雪冰城">
+	        <p>蜜雪冰城</p>
+	    </div>
+	    <div class="details" id="item_mixuebingcheng">
+	        <p>这是蜜雪冰城的详细内容。</p>
+	    </div>
+	    <div class="icon" onclick="toggleDetails('item_molinaibai')">
+	        <img src="icon/IMG_8159.PNG" alt="茉莉奶白">
+	        <p>茉莉奶白</p>
+	    </div>
+	    <div class="details" id="item_molinaibai">
+	        <p>这是茉莉奶白的详细内容。</p>
+	    </div>
+		
+	    <!-- N组 -->
+	    <div class="section-title">N</div>
+	    <div class="icon" onclick="toggleDetails('item_naixue')">
+	        <img src="icon/IMG_8116.PNG" alt="奈雪的茶">
+	        <p>奈雪的茶</p>
+	    </div>
+	    <div class="details" id="item_naixue">
+	        <p>这是奈雪的茶的详细内容。</p>
+	    </div>
+		
+		<!-- 7分甜 -->
+	    <div class="section-title">Q</div>
+	    <div class="icon" onclick="toggleDetails('item_qifentian')">
+	        <img src="icon/IMG_8189.PNG" alt="7分甜">
+	        <p>7分甜</p>
+	    </div>
+	    <div class="details" id="item_qifentian">
+	        <p>这是7分甜的详细内容。</p>
+	    </div>
+		
+		<!-- 瑞幸咖啡 -->
+		<div class="section-title">R</div>
+		<div class="icon" onclick="toggleDetails('item_ruixingkafei')">
+		    <img src="icon/IMG_8149.PNG" alt="瑞幸咖啡">
+		    <p>瑞幸咖啡</p>
+		</div>
+		<div class="details" id="item_ruixingkafei'">
+		    <p>这是瑞幸咖啡的详细内容。</p>
+		</div>
+		
+	    <!-- S组 -->
+	    <div class="section-title">S</div>
+	    <div class="icon" onclick="toggleDetails('item_snackpaper')">
+	        <img src="icon/IMG_8147.PNG" alt="SnackPaper">
+	        <p>SnackPaper</p>
+	    </div>
+	    <div class="details" id="item_snackpaper">
+	        <p>这是SnackPaper的详细内容。</p>
+	    </div>
+	
+	    <!-- X组 -->
+	    <div class="section-title">X</div>
+	    <div class="icon" onclick="toggleDetails('item_xicha')">
+	        <img src="icon/IMG_8107.PNG" alt="喜茶">
+	        <p>喜茶</p>
+	    </div>
+	    <div class="details" id="item_xicha">
+	        <p>这是喜茶的详细内容。</p>
+	    </div>
+		<div class="icon" onclick="toggleDetails('item_starbucks')">
+		    <img src="icon/IMG_8128.PNG" alt="星巴克">
+		    <p>星巴克</p>
+		</div>
+		<div class="details" id="item_starbucks">
+		    <p>这是星巴克的详细内容。</p>
+		</div>
+	
+	    <!-- Y组 -->
+	    <div class="section-title">Y</div>
+	    <div class="icon" onclick="toggleDetails('item_yeye')">
+	        <img src="icon/IMG_8187.PNG" alt="爷爷不泡茶">
+	        <p>爷爷不泡茶</p>
+	    </div>
+	    <div class="details" id="item_yeye">
+	        <p>这是爷爷不泡茶的详细内容。</p>
+	    </div>
+	    <div class="icon" onclick="toggleDropdown('dropdown_yidiandian')">
+	        <img src="icon/IMG_8120.PNG" alt="一点点">
+	        <p>一点点</p>
+	    </div>
+        <div class="dropdown-menu" id="dropdown_yidiandian">
+            <p onclick="toggleSubDropdown('subDropdown_yidiandian_1')">一点点详细内容 1</p>
+            <div class="sub-dropdown" id="subDropdown_yidiandian_1">
+                <p>详细内容 1-1</p>
+                <p>详细内容 1-2</p>
+            </div>
+            <p onclick="toggleSubDropdown('subDropdown_yidiandian_2')">一点点详细内容 2</p>
+            <div class="sub-dropdown" id="subDropdown_yidiandian_2">
+                <p>详细内容 2-1</p>
+                <p>详细内容 2-2</p>
+            </div>
+        </div>
+	</div>
+	
+	<script>
+	    // 切换一级下拉菜单显示状态
+	    function toggleDropdown(menuId) {
+	        const allDropdowns = document.querySelectorAll('.dropdown-menu');
+	        
+	        // 隐藏其他所有下拉菜单
+	        allDropdowns.forEach(menu => {
+	            if (menu.id !== menuId) {
+	                menu.style.display = 'none';
+	            }
+	        });
+	
+	        const dropdownMenu = document.getElementById(menuId);
+	        
+	        // 切换显示状态
+	        if (dropdownMenu.style.display === 'block') {
+	            dropdownMenu.style.display = 'none';
+	        } else {
+	            dropdownMenu.style.display = 'block';
+	        }
+	    }
+	
+	    // 切换二级下拉菜单显示状态
+	    function toggleSubDropdown(subMenuId) {
+	        const subDropdownMenu = document.getElementById(subMenuId);
+	        
+	        // 切换显示状态
+	        if (subDropdownMenu.style.display === 'block') {
+	            subDropdownMenu.style.display = 'none';
+	        } else {
+	            subDropdownMenu.style.display = 'block';
+	        }
+	    }
+	</script>
+</body>
+</html>
