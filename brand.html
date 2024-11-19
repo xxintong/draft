@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get My Juice.</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin: 10px;
+            background-color: #f0f0f0;
+			margin-top:-13px;
+			padding-bottom: 83px;
+        }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 85px;
+            background-color: #e0e0e0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid #ddd;
+        }
+        .bottom-nav a {
+            text-decoration: none;
+            color: #666666; /* 初始颜色 */
+            font-size: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+			margin-bottom:20px;
+            transition: color 0.3s;
+			-webkit-tap-highlight-color: rgba(0,0,0,0); /* 透明 */
+        }
+        .bottom-nav a img {
+            width: 24px;
+            height: 24px;
+            filter: brightness(0) saturate(100%) invert(40%); /* 默认颜色为 #666666 */
+            transition: filter 0.3s;
+        }
+        .bottom-nav a.active img {
+            filter: brightness(0) saturate(100%) invert(0%); /* 点击后的颜色为 #000000 */
+        }
+        .bottom-nav a.active {
+            color: #000000;
+        }
+		
+		/* 卡片 */
+        .container {
+            width: 100%;
+            
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px 4px;
+            padding: 0px;
+			justify-content: space-between;
+			overflow: hidden;
+			margin-top: 20px;
+        }
+        
+        .card {
+            width: 49.3%; /* 设置每张卡片的宽度占一半 */
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            text-align: center;
+            text-decoration: none;
+            color: #333;
+            transition: transform 0.3s;
+			-webkit-tap-highlight-color: rgba(0,0,0,0); /* 透明 */
+        }
+        
+        .card img {
+            width: 100%;
+            height: 200px; /* 固定图片高度 */
+            object-fit: cover;
+        }
+        
+        .card-content {
+            padding: 15px;
+        }
+        
+        .title-section {
+            display: flex;
+            align-items: center;
+            justify-content: center; 
+            gap: 10px; /* 标签与标题的间距 */
+        }
+        .card-content h3 {
+            font-size: 16px;
+            margin: 10px 0;
+            font-weight: normal;
+        }
+        
+        .new-badge {
+            background-color: #000;
+            color: #fff;
+            font-size: 12px;
+            padding: 2px 6px;
+            border-radius: 3px;
+            display: inline-block;
+            margin-bottom: 1px;
+			-webkit-tap-highlight-color: rgba(0,0,0,0); /* 透明 */
+        }
+		.new-badge1 {
+		    background-color: #D2B48C;
+		    color: #fff;
+		    font-size: 12px;
+		    padding: 2px 6px;
+		    border-radius: 3px;
+		    display: inline-block;
+		    margin-bottom: 1px;
+			-webkit-tap-highlight-color: rgba(0,0,0,0); /* 透明 */
+		}
+        .new-badge2 {
+            background-color: #8B0000;
+            color: #fff;
+            font-size: 12px;
+            padding: 2px 6px;
+            border-radius: 3px;
+            display: inline-block;
+            margin-bottom: 1px;
+			-webkit-tap-highlight-color: rgba(0,0,0,0); /* 透明 */
+        }
+		.new-badge3 {
+		    background-color: #FF0000;
+		    color: #fff;
+		    font-size: 12px;
+		    padding: 2px 6px;
+		    border-radius: 3px;
+		    display: inline-block;
+		    margin-bottom: 1px;
+			-webkit-tap-highlight-color: rgba(0,0,0,0); /* 透明 */
+		}
+		.new-badge4 {
+		    background-color: #006400;
+		    color: #fff;
+		    font-size: 12px;
+		    padding: 2px 6px;
+		    border-radius: 3px;
+		    display: inline-block;
+		    margin-bottom: 1px;
+			-webkit-tap-highlight-color: rgba(0,0,0,0); /* 透明 */
+		}
+		.new-badge5 {
+		    background-color: #32cd32;
+		    color: #fff;
+		    font-size: 12px;
+		    padding: 2px 6px;
+		    border-radius: 3px;
+		    display: inline-block;
+		    margin-bottom: 1px;
+			-webkit-tap-highlight-color: rgba(0,0,0,0); /* 透明 */
+		}
+		.new-badge6 {
+		    background-color: #7dcd57;
+		    color: #fff;
+		    font-size: 12px;
+		    padding: 2px 6px;
+		    border-radius: 3px;
+		    display: inline-block;
+		    margin-bottom: 1px;
+			-webkit-tap-highlight-color: rgba(0,0,0,0); /* 透明 */
+		}
+		.new-badge7 {
+		    background-color: #e67e22;
+		    color: #fff;
+		    font-size: 12px;
+		    padding: 2px 6px;
+		    border-radius: 3px;
+		    display: inline-block;
+		    margin-bottom: 1px;
+			-webkit-tap-highlight-color: rgba(0,0,0,0); /* 透明 */
+		}
+		.new-badge8 {
+		    background-color: #00008b;
+		    color: #fff;
+		    font-size: 12px;
+		    padding: 2px 6px;
+		    border-radius: 3px;
+		    display: inline-block;
+		    margin-bottom: 1px;
+			-webkit-tap-highlight-color: rgba(0,0,0,0); /* 透明 */
+		}
+		.new-badge9 {
+		    background-color: #4169e1;
+		    color: #fff;
+		    font-size: 12px;
+		    padding: 2px 6px;
+		    border-radius: 3px;
+		    display: inline-block;
+		    margin-bottom: 1px;
+			-webkit-tap-highlight-color: rgba(0,0,0,0); /* 透明 */
+		}
+		.new-badge10 {
+		    background-color: #1e90ff;
+		    color: #fff;
+		    font-size: 12px;
+		    padding: 2px 6px;
+		    border-radius: 3px;
+		    display: inline-block;
+		    margin-bottom: 1px;
+			-webkit-tap-highlight-color: rgba(0,0,0,0); /* 透明 */
+		}
+		.new-badge11 {
+		    background-color: #ffd700;
+		    color: #fff;
+		    font-size: 12px;
+		    padding: 2px 6px;
+		    border-radius: 3px;
+		    display: inline-block;
+		    margin-bottom: 1px;
+			-webkit-tap-highlight-color: rgba(0,0,0,0); /* 透明 */
+		}
+        .card-content button {
+            background-color: #e0e0e0;
+            color: #333;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 15px;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+			-webkit-tap-highlight-color: rgba(0,0,0,0); /* 透明 */
+        }
+        
+        .card-content button:hover {
+            background-color: #bfbfbf;
+            color: #fff;
+        }
+		
+        /* 模态窗口背景 */
+        .modal-bg {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        /* 模态窗口内容 */
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            width: 80%;
+            max-width: 300px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        /* 关闭按钮样式 */
+        .close-btn {
+            background-color: #000;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+			display:none;
+        }
+		.close-btn1 {
+		    background-color: #D2B48C;
+		    color: white;
+		    border: none;
+		    padding: 5px 10px;
+		    border-radius: 5px;
+		    cursor: pointer;
+		    margin-top: 10px;
+			display:none;
+		}
+		.close-btn2 {
+		    background-color: #8B0000;
+		    color: white;
+		    border: none;
+		    padding: 5px 10px;
+		    border-radius: 5px;
+		    cursor: pointer;
+		    margin-top: 10px;
+			display:none;
+		}
+		.close-btn3 {
+		    background-color: #FF0000;
+		    color: white;
+		    border: none;
+		    padding: 5px 10px;
+		    border-radius: 5px;
+		    cursor: pointer;
+		    margin-top: 10px;
+			display:none;
+		}
+		.close-btn4 {
+		    background-color: #006400;
+		    color: white;
+		    border: none;
+		    padding: 5px 10px;
+		    border-radius: 5px;
+		    cursor: pointer;
+		    margin-top: 10px;
+			display:none;
+		}
+		.close-btn5 {
+		    background-color: #32cd32;
+		    color: white;
+		    border: none;
+		    padding: 5px 10px;
+		    border-radius: 5px;
+		    cursor: pointer;
+		    margin-top: 10px;
+			display:none;
+		}
+		.close-btn6 {
+		    background-color: #7dcd57;
+		    color: white;
+		    border: none;
+		    padding: 5px 10px;
+		    border-radius: 5px;
+		    cursor: pointer;
+		    margin-top: 10px;
+			display:none;
+		}
+		.close-btn7 {
+		    background-color: #e67e22;
+		    color: white;
+		    border: none;
+		    padding: 5px 10px;
+		    border-radius: 5px;
+		    cursor: pointer;
+		    margin-top: 10px;
+			display:none;
+		}
+		.close-btn8 {
+		    background-color: #00008b;
+		    color: white;
+		    border: none;
+		    padding: 5px 10px;
+		    border-radius: 5px;
+		    cursor: pointer;
+		    margin-top: 10px;
+			display:none;
+		}
+		.close-btn9 {
+		    background-color: #4169e1;
+		    color: white;
+		    border: none;
+		    padding: 5px 10px;
+		    border-radius: 5px;
+		    cursor: pointer;
+		    margin-top: 10px;
+			display:none;
+		}
+		.close-btn10 {
+		    background-color: #1e90ff;
+		    color: white;
+		    border: none;
+		    padding: 5px 10px;
+		    border-radius: 5px;
+		    cursor: pointer;
+		    margin-top: 10px;
+			display:none;
+		}
+		.close-btn11 {
+		    background-color: #ffd700;
+		    color: white;
+		    border: none;
+		    padding: 5px 10px;
+		    border-radius: 5px;
+		    cursor: pointer;
+		    margin-top: 10px;
+			display:none;
+		}
+    </style>
+</head>
+<body>
+    <!-- 底部导航栏 -->
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-link">
+			<img src="images/shouye.svg" alt="首页">
+			<span>首页</span>
+        </a>
+        <a href="search.html" class="nav-link">
+            <img src="images/sousuo.svg" alt="分类">
+            <span>分类</span>
+        </a>
+        <a href="brand.html" class="nav-link active">
+            <img src="images/zhenzhunaicha.svg" alt="奶茶">
+            <span>品牌</span>
+        </a>
+        <a href="random.html" class="nav-link">
+            <img src="images/chouxuan.svg" alt="随机">
+            <span>随机</span>
+        </a>
+    </div>
+	
+	<div class="container">
+	    <!-- 第一张卡片 -->
+		<a href="product1.html" class="card">
+		    <img src="milktea/IMG_7623.JPG" alt="商品1">
+		    <div class="card-content">
+		        <div class="title-section">
+		        	<span class="new-badge">品牌</span>
+		        	<h3>乐乐茶</h3>
+		        </div>
+                    <button class="openModalBtn" data-brand="乐乐茶">Get My Juice</button>
+		    </div>
+		</a>
+	    <a href="product1.html" class="card">
+	        <img src="milktea/IMG_7610.JPG" alt="商品1">
+	        <div class="card-content">
+				<div class="title-section">
+					<span class="new-badge">品牌</span>
+					<h3>喜茶</h3>
+				</div>
+	                <button class="openModalBtn" data-brand="喜茶">Get My Juice</button>
+	        </div>
+	    </a>
+		
+		<a href="product1.html" class="card">
+		    <img src="milktea/IMG_7619.JPG" alt="商品1">
+		    <div class="card-content">
+		        <div class="title-section">
+		        	<span class="new-badge">品牌</span>
+		        	<h3>古茗</h3>
+		        </div>
+		        <button class="openModalBtn" data-brand="古茗">Get My Juice</button>
+		    </div>
+		</a>
+		<a href="product1.html" class="card">
+		    <img src="milktea/IMG_7620.JPG" alt="商品1">
+		    <div class="card-content">
+		        <div class="title-section">
+		        	<span class="new-badge">品牌</span>
+		        	<h3>茉莉奶白</h3>
+		        </div>
+		        <button class="openModalBtn" data-brand="茉莉奶白">Get My Juice</button>
+		    </div>
+		</a>
+		<a href="product1.html" class="card">
+		    <img src="milktea/IMG_7629.JPG" alt="商品1">
+		    <div class="card-content">
+		        <div class="title-section">
+		        	<span class="new-badge1">品牌</span>
+		        	<h3>爷爷不泡茶</h3>
+		        </div>
+		        <button class="openModalBtn" data-brand="爷爷不泡茶">Get My Juice</button>
+		    </div>
+		</a>
+		<a href="product1.html" class="card">
+		    <img src="milktea/IMG_7632.jpeg" alt="商品1">
+		    <div class="card-content">
+		        <div class="title-section">
+		        	<span class="new-badge2">品牌</span>
+		        	<h3>贡茶</h3>
+		        </div>
+		        <button class="openModalBtn" data-brand="贡茶">Get My Juice</button>
+		    </div>
+		</a>
+		<a href="product1.html" class="card">
+		    <img src="milktea/IMG_7631.JPG" alt="商品1">
+		    <div class="card-content">
+		        <div class="title-section">
+		        	<span class="new-badge3">品牌</span>
+		        	<h3>马伍旺饮料厂</h3>
+		        </div>
+		        <button class="openModalBtn" data-brand="马伍旺饮料厂">Get My Juice</button>
+		    </div>
+		</a>
+		<a href="product1.html" class="card">
+		    <img src="milktea/IMG_7611.JPG" alt="商品1">
+		    <div class="card-content">
+		        <div class="title-section">
+		        	<span class="new-badge3">品牌</span>
+		        	<h3>霸王茶姬</h3>
+		        </div>
+		        <button class="openModalBtn" data-brand="霸王茶姬">Get My Juice</button>
+		    </div>
+		</a>
+		
+		<a href="product1.html" class="card">
+		    <img src="milktea/IMG_7621.JPG" alt="商品1">
+		    <div class="card-content">
+		        <div class="title-section">
+		        	<span class="new-badge2">品牌</span>
+		        	<h3>茶颜悦色</h3>
+		        </div>
+		        <button class="openModalBtn" data-brand="茶颜悦色">Get My Juice</button>
+		    </div>
+		</a>
+		<a href="product1.html" class="card">
+		    <img src="milktea/IMG_7616.JPG" alt="商品1">
+		    <div class="card-content">
+		        <div class="title-section">
+		        	<span class="new-badge3">品牌</span>
+		        	<h3>蜜雪冰城</h3>
+		        </div>
+		        <button class="openModalBtn" data-brand="蜜雪冰城">Get My Juice</button>
+		    </div>
+		</a>
+		<a href="product1.html" class="card">
+		    <img src="milktea/IMG_7617.JPG" alt="商品1">
+		    <div class="card-content">
+		        <div class="title-section">
+		        	<span class="new-badge4">品牌</span>
+		        	<h3>星巴克</h3>
+		        </div>
+		        <button class="openModalBtn" data-brand="星巴克">Get My Juice</button>
+		    </div>
+		</a>
+		<a href="product1.html" class="card">
+		    <img src="milktea/IMG_7613.JPG" alt="商品1">
+		    <div class="card-content">
+		        <div class="title-section">
+		        	<span class="new-badge4">品牌</span>
+		        	<h3>一点点</h3>
+		        </div>
+		        <button class="openModalBtn" data-brand="一点点">Get My Juice</button>
+		    </div>
+		</a>
+		<a href="product1.html" class="card">
+		    <img src="milktea/IMG_7625.JPG" alt="商品1">
+		    <div class="card-content">
+		        <div class="title-section">
+		        	<span class="new-badge5">品牌</span>
+		        	<h3>SnackPaper</h3>
+		        </div>
+		        <button class="openModalBtn" data-brand="SnackPaper">Get My Juice</button>
+		    </div>
+		</a>
+		<a href="product1.html" class="card">
+		    <img src="milktea/IMG_7612.JPG" alt="商品1">
+		    <div class="card-content">
+		        <div class="title-section">
+		        	<span class="new-badge6">品牌</span>
+		        	<h3>奈雪的茶</h3>
+		        </div>
+		        <button class="openModalBtn" data-brand="奈雪的茶">Get My Juice</button>
+		    </div>
+		</a>
+		
+		<a href="product1.html" class="card">
+		    <img src="milktea/IMG_7614.JPG" alt="商品1">
+		    <div class="card-content">
+		        <div class="title-section">
+		        	<span class="new-badge7">品牌</span>
+		        	<h3>CoCo</h3>
+		        </div>
+		        <button class="openModalBtn" data-brand="CoCo">Get My Juice</button>
+		    </div>
+		</a>
+		<a href="product1.html" class="card">
+		    <img src="milktea/IMG_7615.JPG" alt="商品1">
+		    <div class="card-content">
+		        <div class="title-section">
+		        	<span class="new-badge7">品牌</span>
+		        	<h3>沪上阿姨</h3>
+		        </div>
+		        <button class="openModalBtn" data-brand="沪上阿姨">Get My Juice</button>
+		    </div>
+		</a>
+		<a href="product1.html" class="card">
+		    <img src="milktea/IMG_7618.JPG" alt="商品1">
+		    <div class="card-content">
+		        <div class="title-section">
+		        	<span class="new-badge8">品牌</span>
+		        	<h3>瑞幸咖啡</h3>
+		        </div>
+		        <button class="openModalBtn" data-brand="瑞幸咖啡">Get My Juice</button>
+		    </div>
+		</a>
+		<a href="product1.html" class="card">
+		    <img src="milktea/IMG_7622.JPG" alt="商品1">
+		    <div class="card-content">
+		        <div class="title-section">
+		        	<span class="new-badge9">品牌</span>
+		        	<h3>茶百道</h3>
+		        </div>
+		        <button class="openModalBtn" data-brand="茶百道">Get My Juice</button>
+		    </div>
+		</a>
+		<a href="product1.html" class="card">
+		    <img src="milktea/IMG_7630.JPG" alt="商品1">
+		    <div class="card-content">
+		        <div class="title-section">
+		        	<span class="new-badge11">品牌</span>
+		        	<h3>7分甜</h3>
+		        </div>
+		        <button class="openModalBtn" data-brand="7分甜">Get My Juice</button>
+		    </div>
+		</a>
+	    <a href="product1.html" class="card">
+	        <img src="milktea/IMG_7624.JPG" alt="商品1">
+	        <div class="card-content">
+	            <div class="title-section">
+	            	<span class="new-badge10">品牌</span>
+	            	<h3>百分茶</h3>
+	            </div>
+	            <button class="openModalBtn" data-brand="百分茶">Get My Juice</button>
+	        </div>
+	    </a>
+		
+        <!-- 模态窗口结构 -->
+        <div class="modal-bg" id="milkTeaModal">
+            <div class="modal-content">
+                <h2 id="brandTitle">品牌</h2>
+                <p> <span id="result">奶茶</span></p>
+				<img id="teaImage" src="" alt="奶茶图片" style="width: 100%; max-height: 400px; object-fit: cover;">
+                <button class="close-btn" id="close-btn" onclick="closeModal()">关闭</button>
+				<button class="close-btn1" id="close-btn1" onclick="closeModal()">关闭</button>
+				<button class="close-btn2" id="close-btn2" onclick="closeModal()">关闭</button>
+				<button class="close-btn3" id="close-btn3" onclick="closeModal()">关闭</button>
+				<button class="close-btn4" id="close-btn4" onclick="closeModal()">关闭</button>
+				<button class="close-btn5" id="close-btn5" onclick="closeModal()">关闭</button>
+				<button class="close-btn6" id="close-btn6" onclick="closeModal()">关闭</button>
+				<button class="close-btn7" id="close-btn7" onclick="closeModal()">关闭</button>
+				<button class="close-btn8" id="close-btn8" onclick="closeModal()">关闭</button>
+				<button class="close-btn9" id="close-btn9" onclick="closeModal()">关闭</button>
+				<button class="close-btn10" id="close-btn10" onclick="closeModal()">关闭</button>
+				<button class="close-btn11" id="close-btn11" onclick="closeModal()">关闭</button>
+            </div>
+        </div>
+	
+    <script>
+        const milkTeaOptions = {
+            '喜茶': [
+                { name: '豆豆波波茶' }, { name: '双豆波波茶' }, { name: '三倍厚抹' }, { name: '纤体瓶系列' },
+                { name: '多肉桃李' }, { name: '鸭喜香轻柠茶' }, { name: '绿妍轻柠茶' }, { name: '多肉葡萄' },
+                { name: '轻芝多肉葡萄' }, { name: '有喜柿椰' }, { name: '喜柿多多' }, { name: '椰椰芒芒' },
+                { name: '芒芒甘露' }, { name: '多肉莓莓桃' }, { name: '多肉芒芒' }, { name: '小奶沫系列' },
+                { name: '芝芝绿妍茶后' }, { name: '纯绿妍茶后' }, { name: '双城•桂花酿' }, { name: '金凤茶王™（焙火香）' },
+                { name: '抹茉' }, { name: '浓抹绿妍' }, { name: '红莱头美颜瓶' }, { name: '芝芝抹茶' },
+                { name: '水牛乳双拼抹茶' }, { name: '抹茶波波冰' }, { name: '抹茶·水牛乳' }, { name: '烤黑糖波波真乳茶' },
+                { name: '黑糖波波真乳茶' }, { name: '水牛乳双拼波波' }, { name: '烤黑糖波波牛乳' }, { name: '黑糖波波真牛乳' },
+                { name: '焙茶波波冰' }, { name: '波波真乳茶' }, { name: '芝芝多肉葡萄' }, { name: '芝芝芒芒' }
+            ]            ,
+			'霸王茶姬': [
+			    { name: '金乌扶摇' }, { name: '扶摇起' }, { name: '桂馥兰香' }, { name: '伯牙绝弦' },
+			    { name: '青青糯山' }, { name: '万里木兰' }, { name: '花田乌龙' }, { name: '山野栀子' },
+			    { name: '去云南玫瑰普洱' }, { name: '白雾红尘' }, { name: '万山红金丝小种' }, { name: '七里香' },
+			    { name: '栀香水光柠檬茶' }, { name: '琥珀光' }, { name: '千峰翠' }, { name: '橙香四季' },
+			    { name: '木兰辞' }, { name: '野栀子' }, { name: '花田坞' }, { name: '云中绿' },
+			    { name: '酌红袍' }, { name: '桂子飘飘' }, { name: '关山木兰' }, { name: '春日桃桃' },
+			    { name: '千山雪金丝小种' }
+			]            ,
+			'奈雪的茶': [
+			    { name: '不加糖•奈雪黑葡萄' }, { name: '霸气龙眼' }, { name: '霸气芝士草莓' }, { name: '霸气橙子' },
+			    { name: '霸气羽衣甘蓝奇异果' }, { name: '霸气杨枝甘露' }, { name: '霸气葡萄' }, { name: '霸气柠檬油柑' },
+			    { name: '霸气草莓' }, { name: '霸气芒果' }, { name: '霸气芝士葡萄' }, { name: '霸气西柚' },
+			    { name: '霸气玉油柑' }, { name: '芋泥芋圆奶茶' }, { name: '超厚芋泥奶茶' }, { name: '茉莉初雪奶茶' },
+			    { name: '金色山脉珍珠奶茶' }, { name: '手熬黑糖珍珠鲜牛奶' }, { name: '森林观音奶茶' }, { name: '森林观音' },
+			    { name: '奈雪茉莉初雪' }, { name: '金色山脉' }, { name: '美式咖啡' }, { name: '茉莉初雪茶咖' },
+			    { name: '拿铁咖啡' }, { name: '生椰拿铁' }
+			]            ,
+			'一点点': [
+			    { name: '粉条奶乌' }, { name: '六窨茉莉奶绿' }, { name: '六窨茉莉绿茶' },
+			    { name: '焙茶奶茶' }, { name: '苹果茉莉绿' }, { name: '苹果奶绿' }, { name: '桂花奶乌' },
+			    { name: '桂花冰淇淋乌龙' }, { name: '藏青盐冰淇淋乌龙' }, { name: '四季奶青' }, { name: '波霸奶茶' },
+			    { name: '红茶玛奇朵' }, { name: '冰淇淋红茶' }, { name: '波霸奶绿' }, { name: '抹茶' },
+			    { name: 'A2牛乳红茶' }, { name: '葡萄柚绿' }, { name: '奶绿装芒' }, { name: 'QQ美莓奶茶' },
+			    { name: '芭乐奶绿' }, { name: '奶茶' }, { name: '乌龙奶茶' }, { name: '薄荷奶绿' },
+			    { name: '藏青盐咸奶绿' }, { name: '阿华田' }, { name: '抹茶奶茶' }, { name: '椰奶奶青' },
+			    { name: '混珠奶茶' }, { name: '茶冻薄荷绿' }, { name: '招牌四季春＋珍波椰' }, { name: '椰果奶茶' },
+			    { name: '锦鲤红茶' }, { name: '清香乌龙茶' }, { name: '四季春茶' }, { name: '养乐多绿' },
+			    { name: '桂花乌龙' }, { name: '草莓A2牛乳绿茶' }, { name: '柠檬红' }, { name: '金桔柠檬绿' },
+			    { name: '茶冻草莓红茶' }, { name: '芒果青' }, { name: '望梅绿' }, { name: '芭乐绿' },
+			    { name: '杨枝甘露轻茶版' }, { name: '杨枝甘露' }, { name: '草莓甘露' }, { name: '葡萄柚汁' },
+			    { name: '柠檬汁' }, { name: '金桔柠檬' }, { name: '柠檬养乐多' }
+			]            ,
+			'CoCo': [
+			    { name: '瀑布黑糖珍珠牛乳茶' }, { name: '瀑布黑糖珍珠牛乳' }, { name: '懒人红石榴' }, { name: '懒人石榴酸奶绿' },
+			    { name: '懒人石榴冰' }, { name: '抹茶红豆牛乳' }, { name: '一抹清茉（抹茶轻乳茶）' }, { name: '抹茶大福' },
+			    { name: '双倍鲜芋奶绿' }, { name: '鲜芋奶茶' }, { name: '现煮红豆奶茶' }, { name: '鲜芋大福' },
+			    { name: '鲜芋牛奶' }, { name: '现煮青稞红豆牛奶' }, { name: '鲜芋青稞牛奶' }, { name: '鲜芋芋圆牛奶' },
+			    { name: '鲜芋青稞大红袍奶茶' }, { name: 'CoCo巧克力牛奶' }, { name: '珍珠巧克力牛奶' }, { name: '双拼巧克力牛奶' },
+			    { name: '沐春风（茉莉轻乳茶）' }, { name: '岩韵大红袍' }, { name: '清香茉莉绿' }, { name: '高韵红茶' },
+			    { name: '珍珠牛乳茶' }, { name: '17岁轻茶' }, { name: '鲜柠檬茶' }, { name: '鲜百香橙橙' },
+			    { name: '金桔柠檬汁' }, { name: '鲜橙满满' }, { name: '芒果绿茶' }, { name: '四季柠檬水' },
+			    { name: '一桶柠檬鸭屎香' }, { name: '手打柠檬鸭屎香' }, { name: '芭啦啦柠檬' }, { name: 'CoCo奶茶' },
+			    { name: '茉香奶绿' }, { name: '珍珠奶茶' }, { name: '大红袍珍珠奶茶' }, { name: '奶茶三兄弟' },
+			    { name: '奶茶吨吨桶' }, { name: '芒果大福' }, { name: '芋圆奶茶' }, { name: '香香米乳鸭屎香' },
+			    { name: '鲜百香双响炮' }, { name: '生椰杨枝甘露' }, { name: '星空葡萄' }, { name: '闪光爆爆葡萄' },
+			    { name: '莓莓果茶' }, { name: '红果小姐姐' }, { name: '粉粉莓莓' }, { name: '榴莲麻薯椰' },
+			    { name: '加油牛油果' }, { name: '牛油果橙橙' }, { name: '茉莉花拿铁咖啡' }, { name: '米乳拿铁' },
+			    { name: '香橙冷萃美式' }, { name: '手打柠檬冷萃美式' }, { name: '美式咖啡' }, { name: '生椰拿铁咖啡' },
+			    { name: '拿铁咖啡' }
+			],
+            '沪上阿姨': [
+                { name: '厚芋泥生打椰' }, { name: '厚芋泥桃胶大满贯' }, { name: '荔枝冰酿' }, { name: '厚芋泥波波奶茶' },
+                { name: '杨枝甘露经典版' }, { name: '浅浅清茉' }, { name: '超嗲草莓大福' }, { name: '红韵柠檬茶' },
+                { name: '多肉葡萄金砖' }, { name: '仙仙玫瑰青提' }, { name: '荔枝冰酿' }, { name: '血糯米奶茶' },
+                { name: '琥珀桃胶牛乳茶' }, { name: '自由抹茶波波' }, { name: '手作黑糖波波牛乳茶' }, { name: '波波奶茶' },
+                { name: '茉莉奶绿' }, { name: '芋圆奶茶' }, { name: '自由抹茶芋泥' }, { name: '富桂酒酿芋圆' },
+                { name: '富桂酒酿大福' }, { name: '椰果奶茶' }, { name: '杨枝甘露经典版' }, { name: '超嗲草莓大福' },
+                { name: '仙仙玫瑰青提' }, { name: '杨枝甘露清爽版' }, { name: '桃桃大福' }, { name: '爆汁葡萄冻' },
+                { name: 'wow山楂莓莓' }, { name: 'wow山楂雪山莓(无雪顶)' }, { name: 'wow山楂浮云桂' }, { name: '自由抹茶莓莓' },
+                { name: '芝士葡萄奶盖' }, { name: '浅浅清茉' }, { name: '幽幽红韵' }, { name: '泼天富桂' }, { name: '荔荔兰香' },
+                { name: '琥珀桃胶炖梨冷' }, { name: '琥珀桃胶炖梨热' }, { name: '红韵柠檬茶' }, { name: '茉莉柠檬茶' },
+                { name: '仙仙青提柠檬' }, { name: '桃桃蜜柚' }, { name: '草莓桃桃茶' }, { name: '百香三重奏' },
+                { name: '鲜柠生打椰' }, { name: '经典美式' }, { name: '生椰拿铁' }, { name: '鲜爽茉莉花茶' },
+                { name: '茉莉茶咖' }, { name: '丝绒金奖拿铁' }, { name: '金奖生椰拿铁' }, { name: '金奖美式' }
+            ],
+            '蜜雪冰城': [
+                { name: '东方乌龙轻乳茶' }, { name: '东方乌龙奶盖茶' }, { name: '东方乌龙茶' }, { name: '糯香奶绿' },
+                { name: '糯香桂花茶' }, { name: '茉莉奶绿' }, { name: '冰鲜柠檬水' }, { name: '新鲜冰淇淋' },
+                { name: '珍珠奶茶' }, { name: '棒打鲜橙' }, { name: '满杯百香果' }, { name: '芋圆葡萄' },
+                { name: '蜜桃四季春' }, { name: '脆皮大圣代' }, { name: '雪王大圣代（奥利奥饼干风味）' },
+                { name: '雪王大圣代（草莓）' }, { name: '草莓摇摇奶昔' }, { name: '桑基摇摇奶昔' },
+                { name: '雪王小圣代（奥利奥饼干风味）' }, { name: '雪王小圣代（草莓味）' }, { name: '雪王小圣代（芒果）' },
+                { name: '雪王大圣代（芒果）' }, { name: '草莓啵啵' }, { name: '桑葚莓莓' }, { name: '桃喜芒芒' },
+                { name: '柠檬绿茶' }, { name: '菠萝百香果' }, { name: '菠萝甜心橙' }, { name: '香柠百香果' },
+                { name: '香柠绿茶' }, { name: '柠檬乌龙茶' }, { name: '椰果奶茶' }, { name: '红豆奶茶' },
+                { name: '三拼霸霸奶茶' }, { name: '布丁奶茶' }, { name: '双拼奶茶' }, { name: '原味奶茶' },
+                { name: '芋圆奶茶' }, { name: '富桂糯糯茶' }, { name: '燕麦奶茶' }, { name: '茉莉奶绿' },
+                { name: '港式杨枝甘露' }, { name: '蜜桃甘露' }, { name: '草莓椰奶露' }, { name: '美式咖啡' },
+                { name: '茉莉拿铁咖啡' }, { name: '芝士奶盖咖啡' }, { name: '拿铁咖啡' }, { name: '咖啡椰椰' },
+                { name: '雪王雪顶咖啡' }, { name: '芝士奶盖四季春' }, { name: '芝士奶盖绿茶' }, { name: '芝士奶盖蜜桃' },
+                { name: '芝士奶盖桑葚' }, { name: '芝士奶盖富桂茶' }, { name: '糯香绿茶' }, { name: '茉莉绿茶' },
+                { name: '高山四季春茶' }
+            ],
+            '星巴克': [
+                { name: '太妃榛果拿铁' }, { name: '黄油曲奇摩卡' }, { name: '黄油曲奇抹茶拿铁' }, { name: '太妃榛果星冰乐' },
+                { name: '清柠玛奇朵' }, { name: '椰椰玛奇朵' }, { name: '椰子丝绒燕麦拿铁' }, { name: '馥芮白®' },
+                { name: '拿铁' }, { name: '美式咖啡' }, { name: '焦糖玛奇朵' }, { name: '燕麦拿铁' },
+                { name: '燕麦焦糖玛奇朵' }, { name: '巴旦木拿铁' }, { name: '榛果风味巴旦木拿铁' },
+                { name: '大溪地香草风情巴旦木拿铁' }, { name: '香草风味拿铁' }, { name: '榛果风味拿铁' },
+                { name: '浓郁咖啡拿铁' }, { name: '摩卡' }, { name: '金烘馥芮白' }, { name: '金烘焦糖玛奇朵' },
+                { name: '金烘香草风味巴旦木拿铁' }, { name: '金烘美式咖啡' }, { name: '金烘拿铁' },
+                { name: '冷萃冰咖啡' }, { name: '朗姆巧克力风味慕斯浓缩' }, { name: '海盐焦糖慕斯浓缩' },
+                { name: '星巴克海盐焦糖冰震浓缩' }, { name: '星巴克大溪地香草风情冰震浓缩' },
+                { name: '星巴克椰椰双打冰震浓缩' }, { name: '椰香可芮朵' }, { name: '可芮朵' },
+                { name: '红丝绒可芮朵' }, { name: '浓椰馥芮白' }, { name: '可可奇诺' }, { name: '巴旦木拿铁' },
+                { name: '大溪地香草风情巴旦木拿铁' }, { name: '榛果风味巴旦木拿铁' }, { name: '燕麦拿铁' },
+                { name: '椰子丝绒燕麦拿铁' }, { name: '燕麦焦糖玛奇朵' }, { name: '粉莓柠力生咖' },
+                { name: '低因萃取香草风味巴旦木拿铁' }, { name: '低因萃取美式咖啡' }, { name: '低因萃取卡布奇诺' },
+                { name: '低因萃取椰子丝绒燕麦拿铁' }, { name: '摩卡可可碎片星冰乐®' }, { name: '焦糖咖啡星冰乐®' },
+                { name: '摩卡星冰乐®' }, { name: '榛果风味摩卡星冰乐®' }, { name: '浓缩咖啡星冰乐®' },
+                { name: '抹茶星冰乐®' }, { name: '抹茶可可碎片星冰乐®' }, { name: '香草风味星冰乐®' },
+                { name: '芒果西番莲果茶星冰乐®' }, { name: '巧克力风味星冰乐®' }, { name: '奶油星冰乐®' },
+                { name: '金柠红茶拿铁' }, { name: '燕麦抹茶拿铁' }, { name: '抹茶拿铁' }, { name: '红茶拿铁' },
+                { name: '红茶咖啡拿铁鸳鸯' }, { name: '晚霞柠檬茶' }, { name: '冰摇桃桃乌龙茶' }, { name: '冰摇红莓黑加仑茶' },
+                { name: '冰摇柠檬茶' }, { name: '英式早餐红茶' }, { name: '碧螺春绿茶' }, { name: '金萱乌龙茶' },
+                { name: '伯爵调味红茶' }, { name: '气泡撞柠檬-白桃' }, { name: '气泡撞柠檬-覆盆子' },
+                { name: '气泡撞柠檬-芒果西番莲' }, { name: '经典巧克力饮品' }, { name: '原味蒸气奶' },
+                { name: '香草味蒸气奶' }, { name: '可可蒸气奶' }
+            ],
+                '瑞幸咖啡': [
+                    { name: '费尔岛拿铁' }, { name: '太妃榛香拿铁' },
+                    { name: '生椰锡兰轻乳茶' }, { name: '轻轻茉莉' }, { name: '轻轻乌龙' }, { name: '轻咖柠檬茶' },
+                    { name: '葡萄柠檬茶' }, { name: '抹茶柠檬茶' }, { name: '轻咖椰子水' }, { name: '小黄油拿铁' },
+                    { name: '小黄油美式' }, { name: '生椰拿铁' }, { name: '生椰丝绒拿铁' }, { name: '陨石生椰拿铁' },
+                    { name: '抹荼好喝椰' }, { name: '冰吸生椰拿铁' }, { name: '丝绒拿铁' }, { name: '青苹果丝绒拿铁' },
+                    { name: '生椰丝绒拿铁' }, { name: '西梅拿铁' }, { name: '夏末西瓜拿铁' }, { name: '香草丝绒拿铁' },
+                    { name: '标准美式' }, { name: '加浓美式' }, { name: '橙C美式' }, { name: '柠C美式' }, { name: '柚C美式' },
+                    { name: '葡萄冰萃美式' }, { name: '莓果气泡美式' }, { name: '西梅美式' }, { name: '拿铁' },
+                    { name: '燕麦拿铁' }, { name: '香草拿铁' }, { name: '焦糖玛奇朵' }, { name: '卡布奇诺' }, { name: '摩卡' },
+                    { name: '陨石拿铁' }, { name: '精萃澳瑞白' }, { name: '乌龙拿铁' }, { name: '茉莉花香拿铁' },
+                    { name: '茉莉海盐拿铁' }, { name: '瑰夏•美式' }, { name: '瑰夏•Dirty' }, { name: '瑰夏•拿铁' },
+                    { name: '瑰夏•澳瑞白' }, { name: '耶加雪菲•美式' }, { name: '耶加•Dirty' }, { name: '耶加雪菲•拿铁' },
+                    { name: '耶加雪菲•澳瑞白' }, { name: '抹茶拿铁' }, { name: '深烘拿铁' }, { name: '厚乳拿铁' },
+                    { name: '海盐芝士厚乳拿铁' }, { name: '柚C冰茶' }, { name: '橙C冰茶' }, { name: '塞纳莓莓拿铁' },
+                    { name: '西梅小铁' }, { name: '夏末西瓜小铁' }, { name: '塞纳莓莓瑞纳冰' }, { name: '抹荼瑞纳冰' },
+                    { name: '巧克力瑞纳冰' }, { name: '酱香拿铁' }, { name: '青苹果小铁' }, { name: '纯牛奶' },
+                    { name: '一杯黑巧' }, { name: '抹茶好喝椰' }
+                ],
+            	'古茗': [
+            	    { name: '红岩桃胶炖奶' }, { name: '云岭茉莉白' }, { name: '桃隐乌龙香' }, { name: '十里江南桂' },
+            	    { name: '龙眼桂花饮' }, { name: '古茗奶茶' }, { name: '茉莉奶绿' }, { name: '大叔奶茶' },
+            	    { name: '桂花酒酿小丸紫' }, { name: '桂花莲子奶' }, { name: '桃气麻薯小丸紫' }, { name: '什么都有' },
+            	    { name: '茉莉奶芙' }, { name: '布蕾脆脆奶芙' }, { name: '布丁西米露' }, { name: '茉香芋泥奶绿' },
+            	    { name: '芋泥牛乳小丸紫' }, { name: '黑糖珍珠牛乳' }, { name: '黑糖珍珠撞布蕾' }, { name: '生椰抹茶麻薯' },
+            	    { name: '抹茶布蕾' }, { name: '芝士抹茶牛乳' }, { name: '茉香云顶抹茶' }, { name: '百香双重奏' },
+            	    { name: '白玉龙眼椰' }, { name: '杨枝甘露轻盈版' }, { name: '杨枝甘露椰奶' }, { name: '榴莲芒芒麻薯' },
+            	    { name: '爆汁葡萄轻柠' }, { name: '曲香茉莉' }, { name: '芝士茉莉' }
+            	]            	,
+				'茉莉奶白': [
+				    { name: '蜜桃老铁' }, { name: '一口老铁' }, { name: '双倍浓熔岩榛巧' }, { name: '白兰熔岩榛巧' },
+				    { name: '茉莉熔岩榛巧' }, { name: '高山四季春' }, { name: '桂花米麻薯' }, { name: '桂花酒酿米麻薯' },
+				    { name: '开心果桂花酒酿米麻薯' }, { name: '茉莉奶白' }, { name: '一朵茉莉花' }, { name: '一朵栀子花' },
+				    { name: '栀子奶白' }, { name: '白兰' }, { name: '开心果茉莉椰' }, { name: '抹茶白兰' },
+				    { name: '茉莉针王' }, { name: '针王苹果' }, { name: '抹茶针王' }, { name: '抹茶白兰' },
+				    { name: '鸭屎香' }, { name: '栀子生椰' }, { name: '柚花龙井' }, { name: '永春佛手' },
+				    { name: '开心果鸭屎香' }, { name: '开心小兰花' }, { name: '茉莉葡萄' }, { name: '开心果茉莉葡萄' },
+				    { name: '茉莉杨枝甘露' }
+				]            	,
+				'茶颜悦色': [
+				    { name: '少年时' }, { name: '白了少年头' }, { name: '三季虫' }, { name: '桂花弄' },
+				    { name: '桂酿秋' }, { name: '乌衣巷里寻山果' }, { name: '桃花坞' },
+				    { name: '夏虫不语冰•可以吃冰' }, { name: '春来鸟不惊' }, { name: '不食人同烟火' },
+				    { name: '一向三不梔' }, { name: '幽兰拿铁' }, { name: '蔓越阑珊' }, { name: '三季虫' },
+				    { name: '人间烟火' }, { name: '抹茶葡提•风栖版' }, { name: '不知冬' }, { name: '素颜锡兰' },
+				    { name: '筝筝纸鸢' }, { name: '声声乌龙' }, { name: '烟火易冷' }, { name: '栀晓' },
+				    { name: '栀子生椰' }, { name: '风栖绿桂' }, { name: '少年生椰' }, { name: '幽兰琉璃' },
+				    { name: '无忧冷泡茶-空谷' }, { name: '浮云沉香' }
+				]            	,
+				'茶百道': [
+				    { name: '奶白酒麻薯奶绿' }, { name: '奶白酒乌龙' }, { name: '茉莉芭乐' }, { name: '活菌·芭乐酸奶昔' },
+				    { name: '桂花金萱奶冻' }, { name: '椰椰桂花乌龙' }, { name: '金萱乌龙' }, { name: '超厚芋泥鲜奶' },
+				    { name: '超厚芋泥奶茶' }, { name: '超厚芋泥奶绿' }, { name: '茉莉奶绿' }, { name: '豆乳米麻薯' },
+				    { name: '豆乳玉麒麟' }, { name: '招牌芋圆奶茶' }, { name: '黑糖珍珠奶茶' }, { name: '奧利奧奶茶' },
+				    { name: '鲜奶玫瑰奶绿' }, { name: '鲜奶奇兰乌龙' }, { name: '鲜奶茉莉奶绿' }, { name: '西瓜啵啵' },
+				    { name: '生椰西瓜' }, { name: '紫气葡萄冻冻' }, { name: '百香凤梨' }, { name: '手剥鲜石榴茉莉' },
+				    { name: '手剥鲜石榴玫瑰椰' }, { name: '超级大瓜' }, { name: '杨枝甘露' }, { name: '紫气葡萄芝士' },
+				    { name: '青提茉莉' }, { name: '多芒杨枝甘露' }, { name: '芒芒生打椰' }, { name: '真梅醉•青梅绿茶' },
+				    { name: '超级杯水果茶' }, { name: '盐盐冰淇淋乌龙' }, { name: '双球冰淇淋红茶' }, { name: '轻芝抹茶椰青' },
+				    { name: '轻芝红茶椰青' }, { name: '抹茶奶布丁' }, { name: '抹茶奶布丁' }, { name: '活菌・酸奶紫米露' },
+				    { name: '活菌•凤梨酸奶昔' }, { name: '老盐柠檬茶' }, { name: '凤梨柠檬茶' }, { name: '绿茶' },
+				    { name: '岩茶' }, { name: '红茶' }
+				]            	,
+				'乐乐茶': [
+				    { name: '糖炒栗子手打麻薯' }, { name: '糖炒栗子黄金糯叽叽' },
+				    { name: '焦糖饼干脏脏茶' }, { name: '黑糖波霸脏脏茶（牛乳）' }, { name: '抹茶波霸脏脏茶' },
+				    { name: '黑糖波霸脏脏茶（锡兰）' }, { name: '黑糖波霸脏脏茶（乌龙）' },
+				    { name: '大口草莓桃' }, { name: '琥珀锡兰' }, { name: '桂花手打黄米芋' }, { name: '芒果生打椰' },
+				    { name: '六十八朵茉莉' }, { name: '血色暗夜桑葚葡萄' }, { name: '生椰流心柿' },
+				    { name: '桂花流心柿' }, { name: '洛神莲雾石榴水' }, { name: '大橘满满' },
+				    { name: '巨大颗手剥葡萄' }, { name: '杨枝甘露冰冰茶' }, { name: '冷茉石榴' },
+				    { name: '冷茉青提' }, { name: '大橘青提' }, { name: '青提柠柠茶' }, { name: '大口苹果桃' },
+				    { name: '蜜瓜椰椰' }, { name: '栖玉蜜瓜冰' }, { name: '芒果糯叽叽' }, { name: '畅！西梅桃李' },
+				    { name: '东方七窨香柠茶' }, { name: '夏莓柠柠茶' }, { name: '夏萄柠柠茶' },
+				    { name: '生打生椰冻' }, { name: '草莓桃子酪酪' }, { name: '葡萄酪酪' }, { name: '芋泥麻薯红锡兰' },
+				    { name: '黄米麻薯金乌龙' }, { name: '福鼎老白（折桂香）' }, { name: '灭火菊花六宝茶' },
+				    { name: '生椰栀子' }, { name: '手作芋泥生打椰' }, { name: '超厚手打牛奶芋' },
+				    { name: '茉莉清饮' }, { name: '乌龙清饮' }
+				],
+            	'百分茶': [
+            	    { name: '山野栗子奶奶' }, { name: '山野栗子奶茶' }, { name: '提拉米苏拿铁' }, { name: '元气娇颜膏胶饮' },
+            	    { name: '芋泥啵啵鲜奶' }, { name: '芋圆啵啵文山青鲜奶茶' }, { name: '黑糖BiuBiuBiu鲜奶' },
+            	    { name: '山野手作芋泥米麻薯' }, { name: '松露可可锡兰' }, { name: '山野生榨黄皮' },
+            	    { name: '竹生空野' }, { name: '茉立绣窗' }, { name: '拾柴煎茶' }, { name: '碧螺春山' },
+            	    { name: '生榨黄皮美式' }, { name: '大橘美式' }, { name: '雪芽茉莉' }, { name: '蒸青绿茶' },
+            	    { name: '暴打石榴柠檬茶' }, { name: '暴打鸭屎香柠檬茶' }, { name: '手剥红石榴' },
+            	    { name: '龙眼白月光' }, { name: '茉立青提' }, { name: '杨枝甘露' }, { name: '芒椰小三圆' },
+            	    { name: '西瓜冰冰茶' }, { name: '来一桶西瓜冰冰茶' }, { name: '手舂肉肉葡萄奶缇' },
+            	    { name: '手舂肉肉葡萄（无奶缇）' }, { name: '大橘青提' }, { name: '春茶十二月' },
+            	    { name: '来一桶春茶十二月' }, { name: '凤梨春晓' }
+            	]            	,
+				'SnackPaper':[{name:'港风经典牛乳茶',image:'milktea/IMG_7627.jpeg'},{name:'茉莉奶白牛乳茶',image:'milktea/IMG_7626.jpeg'}],
+            	'爷爷不泡茶': [
+            	    { name: '荔枝冰酿' }, { name: '杨梅冰酿' }, { name: '红糖黑珍珠' }, { name: '花魁红糖黑珍珠' },
+            	    { name: '大吉岭红糖珍珠' }, { name: '咸宁桂花' }, { name: '空山栀子' }, { name: '白兰玉露' },
+            	    { name: '武汉茉莉' }, { name: '花魁单丛' }, { name: '重瓣玫瑰' }, { name: '春回•樱花作' },
+            	    { name: '桂花雪梨' }, { name: '香柚栀子' }, { name: '白兰青提' }, { name: '桃桃双皮奶' },
+            	    { name: '初恋玫瑰青提' }, { name: '花魁柠檬' }, { name: '茉莉柠檬' }, { name: '栀子柠檬' },
+            	    { name: '爆炸杨梅' }, { name: '花香杨枝甘露' }, { name: '茉莉' }, { name: '花魁白雪' },
+            	    { name: '栀子白雪' }, { name: '雪顶金桂' }, { name: '江城飘雪' }, { name: '白兰雅雪' }
+            	]            	,
+				'7分甜': [
+				    { name: '小杏运' }, { name: '杏运桃桃奶昔' }, { name: '一整颗鲜梨炖汤' },
+				    { name: '杨枝甘露（经典版）' }, { name: '生椰杨枝甘露（清爽版）' }, { name: '酸奶杨枝甘露' }, { name: 'Mini杨枝甘露' },
+				    { name: '芝芝杨枝甘露' }, { name: '糯叽叭杨枝甘露' }, { name: '榴莲杨枝甘露' }, { name: '满杯馥桂龙眼' }, { name: '满杯红石榴' },
+				    { name: '芒果酸奶奶昔' }, { name: '茉莉奶绿' }, { name: '红豆芋圆奶茶' }, { name: '红豆西米露' }, { name: '四季奶青' }, { name: '芒椰小丸子' },
+				    { name: '蜜桃轻乌龙奶茶' }, { name: '芒果西米露' }, { name: '什么都有（大杯）' }, { name: '芋泥啵啵奶茶' }, { name: '黑糖啵啵牛乳' },
+				    { name: '黑糖珍珠奶茶' }, { name: '奧利奧芝士啵啵奶茶' }, { name: '爆有料奶茶桶' }, { name: '奧利奧酸奶冰' }, { name: '奧利奧芝士奶茶' },
+				    { name: '云间茉莉（翠香茉绿轻乳茶）' }, { name: '花魁观音（兰香乌龙轻乳茶）' }, { name: '馥桂乌龙（桂花乌龙轻乳茶）' },
+				    { name: '云上之滇（玫香滇红轻乳茶）' }, { name: '奧利奥酸奶冰' }, { name: '雪山冰淇淋红茶' }, { name: '李有红气' }, { name: '满杯大橘' },
+				    { name: '多肉葡萄' }, { name: '多肉桃桃' }, { name: '黄金百香芒芒' }, { name: '鲜百香双爆珠' }, { name: '百香大橘' }, { name: '你没柿吧' }, { name: '金鱼之夏' },
+				    { name: '西瓜甘露冰冰茶' }, { name: '手捣西瓜爽爽椰' }, { name: '超级快乐柠檬水' }, { name: '招牌手打柠檬茶' }, { name: '暴打柠檬红茶' },
+				    { name: '霸7柠檬桶' }, { name: '霸7葡萄桶' }, { name: '霸7柠檬桶' }, { name: '霸7水果茶' }, { name: '霸7西瓜桶' }, { name: '爆有料奶茶桶' },
+				    { name: '芝士芒芒' }, { name: '西瓜甘露冰冰茶（芝士版）' }, { name: '芝士多肉葡萄' }, { name: '芝士多肉桃桃' }
+				],
+            	'马伍旺饮料厂': [
+            	    { name: '水牛乳·米麻薯' }, { name: '生椰茶拿铁' }, { name: '超级芒果' }, { name: '龙眼桂花冰' }, { name: '雪顶幽兰' }, 
+            	    { name: '雪顶观音' }, { name: '雪顶含脆' }, { name: '雪顶茉莉' }, { name: '雪顶糯香普洱' }, { name: '雪顶富桂' }, 
+            	    { name: '抹茶菩提' }, { name: '雪顶米乳普洱' }, { name: '素颜观音' }, { name: '茉莉花香' }, { name: '糯香普洱' }, 
+            	    { name: '雨前龙井' }, { name: '抹茶龙井' }, { name: '桃香乌龙' }, { name: '素颜幽澜' }, { name: '花开富桂' }, 
+            	    { name: '抹茶观音' }, { name: '米乳普洱' }, { name: '青提爆柠' }, { name: '整口青提' }, { name: '紫气葡萄' }, 
+            	    { name: '马蹄椰子水' }, { name: '云朵粉椰' }, { name: '澟蓝粉椰' }, { name: '冰蓝生椰' }, { name: '暴打香水柠' }, 
+            	    { name: '苦瓜柠檬茶' }, { name: '香菜柠檬茶' }, { name: '柠檬生椰' }
+            	]            	,
+				'贡茶': [
+				    { name: '东方乌龙（轻乳茶）' }, { name: '东方茉莉（轻乳茶）' }, { name: '中国红（轻乳茶）' }, { name: '红豆布丁奶茶' }, { name: '红豆奶茶' }, 
+				    { name: '薄荷奶绿' }, { name: '黑糖珍珠奶茶' }, { name: '烧仙草奶茶' }, { name: '珍珠奶茶' }, { name: '燕麦奶茶' }, 
+				    { name: '乌龙奶青' }, { name: '茉香奶绿' }, { name: '贡茶烤奶' }, { name: '爆珠奶茶' }, { name: '熊猫奶茶' }, 
+				    { name: '百香凤梨（超大杯）' }, { name: '芝士多肉桃桃' }, { name: '茉莉鲜牛乳大杯' }, { name: '超满足奶茶桶' }, { name: '芝士芒芒' }, 
+				    { name: '芝士多肉葡萄' }, { name: '多肉葡萄' }, { name: '金桔柠檬汁' }, { name: '百香柠檬' }, { name: '百香芒果' }, 
+				    { name: '满杯葡萄' }, { name: '白月光（生打椰）' }, { name: '蜜桃乌龙（含多肉）' }, { name: '草莓啵啵' }, { name: '杨枝甘露（轻盈版）' }, 
+				    { name: '生椰芒芒' }, { name: '百香双响炮' }, { name: '一颗柠檬茶' }, { name: '百香凤梨' }, { name: '杨枝甘露' }, 
+				    { name: '一桶柠檬茶' }, { name: '葡萄啵啵桶' }, { name: '葡萄星冰乐' }, { name: '芒果星冰乐' }, { name: '蓝莓星冰乐' }, 
+				    { name: '抹茶星冰乐' }, { name: '巧克力星冰乐' }, { name: '茉莉鲜牛乳' }, { name: '芋泥波波抹茶/可' }, { name: '椰乳芋泥芒芒' }, 
+				    { name: '厚芋泥燕麦牛奶' }, { name: '芋泥奶茶' }, { name: '芋泥波波奶茶' }, { name: '韵香红茶' }, { name: '冻顶乌龙' }, 
+				    { name: '春水茉莉' }, { name: '白桃乌龙' }, { name: '鲜榨芒果汁' }, { name: '一颗柠檬水' }, { name: '红糖姜牛乳' }, 
+				    { name: '红糖姜茶' }, { name: '芝士乌龙' }, { name: '芝士红茶' }, { name: '芝士可可' }, { name: '芝士茉莉' }, 
+				    { name: '熊猫奶盖' }, { name: '芝士抹茶' }, { name: '咖啡拿铁' }, { name: '美式咖啡' }, { name: '生椰拿铁' }, 
+				    { name: '牛奶烧仙草' }, { name: '贡茶抹茶' }, { name: '鲜奶可可' }, { name: '半杯料可可' }, { name: '半杯料抹茶' }
+				],
+				}
+
+                let currentBrand = '';
+        
+                // 获取所有带有 "openModalBtn" 的按钮并添加事件监听
+                document.querySelectorAll('.openModalBtn').forEach(button => {
+                    button.addEventListener('click', (event) => {
+                        event.preventDefault(); // 阻止 <a> 标签的默认跳转
+        
+                        // 获取按钮对应的品牌名称
+                        currentBrand = button.getAttribute('data-brand');
+                        document.getElementById('brandTitle').innerText = currentBrand;
+        
+                        // 抽取奶茶并显示结果
+                        drawMilkTea();
+						
+			            // 显示对应品牌的关闭按钮
+			            showCloseButton(currentBrand);
+        
+                        // 显示模态框
+                        document.getElementById('milkTeaModal').style.display = 'flex';
+                    });
+                });
+		
+		        // 显示当前品牌的关闭按钮
+		        function showCloseButton(brand) {
+		            // 首先隐藏所有关闭按钮
+		            document.querySelectorAll(' .close-btn, .close-btn1, .close-btn2, .close-btn3, .close-btn4, .close-btn5, .close-btn6, .close-btn7, .close-btn8, .close-btn9, .close-btn10, .close-btn11').forEach(btn => btn.style.display = 'none');
+		
+		            // 根据品牌显示特定的关闭按钮
+		            if (brand === '乐乐茶'||brand === '喜茶'||brand === '古茗'||brand === '茉莉奶白') {
+		                document.getElementById('close-btn').style.display = 'inline-block';
+		            } else if (brand === '爷爷不泡茶') {
+		                document.getElementById('close-btn1').style.display = 'inline-block';
+		            }else if (brand === '贡茶'||brand === '茶颜悦色') {
+		                document.getElementById('close-btn2').style.display = 'inline-block';
+		            }else if (brand === '马伍旺饮料厂'||brand === '霸王茶姬'||brand === '蜜雪冰城') {
+		                document.getElementById('close-btn3').style.display = 'inline-block';
+		            }else if (brand === '星巴克'||brand === '一点点') {
+		                document.getElementById('close-btn4').style.display = 'inline-block';
+		            }else if (brand === 'SnackPaper') {
+		                document.getElementById('close-btn5').style.display = 'inline-block';
+		            }else if (brand === '奈雪的茶') {
+		                document.getElementById('close-btn6').style.display = 'inline-block';
+		            }else if (brand === 'CoCo'||brand === '沪上阿姨') {
+		                document.getElementById('close-btn7').style.display = 'inline-block';
+		            }else if (brand === '瑞幸咖啡') {
+		                document.getElementById('close-btn8').style.display = 'inline-block';
+		            }else if (brand === '茶百道') {
+		                document.getElementById('close-btn9').style.display = 'inline-block';
+		            }else if (brand === '百分茶') {
+		                document.getElementById('close-btn10').style.display = 'inline-block';
+		            }else if (brand === '7分甜') {
+		                document.getElementById('close-btn11').style.display = 'inline-block';
+		            }
+		        }
+				
+                // 抽取奶茶函数
+                function drawMilkTea() {
+                    const teas = milkTeaOptions[currentBrand];
+                    if (teas && teas.length > 0) {
+                        // 随机选择一个奶茶
+                        const randomTea = teas[Math.floor(Math.random() * teas.length)];
+                        document.getElementById('result').innerText = `恭喜抽取：${randomTea.name}`;
+                
+                        // 检查是否有图片，如果有则显示，否则隐藏
+                        if (randomTea.image) {
+                            document.getElementById('teaImage').src = randomTea.image;
+                            document.getElementById('teaImage').style.display = 'block'; // 显示图片
+                        } else {
+                            document.getElementById('teaImage').style.display = 'none'; // 隐藏图片
+                        }
+                    } else {
+                        document.getElementById('result').innerText = '此品牌无奶茶选项。';
+                        document.getElementById('teaImage').style.display = 'none'; // 隐藏图片
+                    }
+                }
+        
+                // 关闭模态框函数
+                function closeModal() {
+                    document.getElementById('milkTeaModal').style.display = 'none';
+                }
+				
+    </script>
+</body>
+</html>
