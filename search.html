@@ -1,0 +1,1879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drink What?</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 85px;
+            background-color: #e0e0e0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid #ddd;
+			z-index: 10;
+        }
+        .bottom-nav a {
+            text-decoration: none;
+            color: #666666; /* 初始颜色 */
+            font-size: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+			margin-bottom:20px;
+            transition: color 0.3s;
+			-webkit-tap-highlight-color: rgba(0,0,0,0); /* 透明 */
+        }
+        .bottom-nav a img {
+            width: 24px;
+            height: 24px;
+            filter: brightness(0) saturate(100%) invert(40%); /* 默认颜色为 #666666 */
+            transition: filter 0.3s;
+        }
+        .bottom-nav a.active img {
+            filter: brightness(0) saturate(100%) invert(0%); /* 点击后的颜色为 #000000 */
+        }
+        .bottom-nav a.active {
+            color: #000000;
+        }
+		
+		/* 图标 */
+		.icon-container {
+		    display: flex;
+		    flex-wrap: wrap;
+		    gap: 20px; /* 间距调整为20px */
+		    margin: 20px;
+			margin-bottom: 100px;
+			-webkit-tap-highlight-color: rgba(0,0,0,0); /* 透明 */
+			position: relative; /* 保证流式布局 */
+		}
+		
+		.icon {
+		        width: 100px;
+		        text-align: center;
+				position: relative; /* 保证流式布局 */
+				
+		    }
+		
+		.icon img {
+		    width: 100px;  /* 根据需要调整图标大小 */
+		    height: 100px;
+		    object-fit: contain;
+		}
+		
+		.details {
+		    display: none;
+		    grid-column: span 3;
+		    background-color: #f0f0f0;
+		    padding: 20px;
+		    border-radius: 10px;
+		    margin-top: -20px;
+		    margin-bottom: 20px;
+		}
+		
+		.icon.active {
+		    background-color: #e0e0e0;
+		}
+		.icon.active::before {
+		    content: '';
+		    position: absolute;
+		    top: -10px; /* 控制背景向上扩展的距离 */
+		    left: 0;
+		    right: 0;
+		    bottom: 0; /* 从顶部到图标底部的背景色 */
+		    background-color: #e0e0e0; /* 替换为你需要的颜色 */
+		    
+		    z-index: -1; /* 确保背景在图标后面 */
+		}
+        /* 分组标题 */
+        .section-title {
+            width: 100%; /* 占据整行 */
+            font-size: 14px;
+            font-weight: bold;
+            color: #000;
+            padding: 10px 0; /* 调整上下间距 */
+            margin-top: 10px; /* 标题与上一组图标间距 */
+            text-align: left; /* 左对齐 */
+            border-top: 1px solid #ddd; /* 可选：分隔线 */
+        }
+		
+		/*下拉菜单 */
+		.dropdown-menu {
+		    display: none;
+		    padding: 5px 10px; /* 减少 padding */
+		    width: 100%;
+		    box-sizing: border-box;
+		    z-index: 1;
+			position: relative;
+			font-weight: bold;
+		}
+		.sub-dropdown {
+		    display: none;
+		    padding: 2px 10px; /* 减少子菜单 padding */
+			margin: 2px 0; /* 减少二级菜单上下的 margin */
+		    margin-left: 5px; /* 缩小缩进 */
+		    border-top: 1px solid #e0e0e0;
+			font-weight: normal;
+		}
+		
+		
+    </style>
+</head>
+<body>
+    <!-- 底部导航栏 -->
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-link">
+            <img src="images/shouye.svg" alt="首页">
+            <span>首页</span>
+        </a>
+        <a href="search.html" class="nav-link active">
+            <img src="images/sousuo.svg" alt="分类">
+            <span>分类</span>
+        </a>
+        <a href="brand.html" class="nav-link">
+            <img src="images/zhenzhunaicha.svg" alt="奶茶">
+            <span>品牌</span>
+        </a>
+        <a href="random.html" class="nav-link">
+            <img src="images/chouxuan.svg" alt="随机">
+            <span>随机</span>
+        </a>
+    </div>
+	
+	<!-- 图标 -->
+	<div class="icon-container">
+	
+	    <!-- B组 -->
+	    <div class="section-title">B</div>
+	    <div class="icon" onclick="toggleDropdown('dropdown_bawang_chaji')">
+	        <img src="icon/IMG_8114.PNG" alt="霸王茶姬">
+	        <p>霸王茶姬</p>
+	    </div>
+	    <div class="dropdown-menu" id="dropdown_bawang_chaji">
+	        <p onclick="toggleSubDropdown('subDropdown_bawang_chaji_1')">原叶鲜奶茶</p>
+	        <div class="sub-dropdown" id="subDropdown_bawang_chaji_1">
+	            <p>金乌扶摇</p>
+				<p>清沫观音</p>
+	            <p>桂馥兰香</p>
+	            <p>伯牙绝弦</p>
+	            <p>青青糯山</p>
+	            <p>万里木兰</p>
+	            <p>花田乌龙</p>
+	            <p>山野栀子</p>
+	            <p>去云南玫瑰普洱</p>
+	            <p>白雾红尘</p>
+	            <p>万山红金丝小种</p>
+				<p>相濡以沫</p>
+				<p>云栖竹下</p>
+				<p>熊猫戏竹</p>
+				<p>雀山乌龙</p>
+				<p>云深普洱</p>
+				<p>悠悠玫瑰</p>
+	        </div>
+			<p onclick="toggleSubDropdown('subDropdown_bawang_chaji_2')">活力轻果茶</p>
+			<div class="sub-dropdown" id="subDropdown_bawang_chaji_2">
+			    <p>七里香</p>
+			    <p>栀香水光柠檬茶</p>
+			    <p>琥珀光</p>
+			    <p>千峰翠</p>
+				<p>橙香四季</p>
+				<p>古涧茉莉</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_bawang_chaji_3')">青云雪顶集</p>
+			<div class="sub-dropdown" id="subDropdown_bawang_chaji_3">
+			    <p>桂子飘飘</p>
+			    <p>关山木兰</p>
+			    <p>春日桃桃</p>
+			    <p>千山雪金丝小种</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_bawang_chaji_4')">远山鲜沏篇</p>
+			<div class="sub-dropdown" id="subDropdown_bawang_chaji_4">
+			    <p>橙香四季</p>
+			    <p>木兰辞</p>
+			    <p>野栀子</p>
+			    <p>花田坞</p>
+			    <p>云中绿</p>
+			    <p>酌红袍</p>
+				<p>折桂令</p>
+				<p>扶摇起</p>
+				<p>采观韵</p>
+				<p>滇秋香</p>
+				<p>观音翠（冷泡）</p>
+				<p>醉龙井</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_bawang_chaji_5')">低负担专区</p>
+			<div class="sub-dropdown" id="subDropdown_bawang_chaji_5">
+			    <p>金乌扶摇</p>
+			    <p>桂馥兰香</p>
+			    <p>伯牙绝弦</p>
+			    <p>青青糯山</p>
+			    <p>万里木兰</p>
+			    <p>山野栀子</p>
+			</div>
+	    </div>
+	    
+	    <div class="icon" onclick="toggleDropdown('dropdown_baifen_cha')">
+	        <img src="icon/IMG_8185.PNG" alt="百分茶">
+	        <p>百分茶</p>
+	    </div>
+	    <div class="dropdown-menu" id="dropdown_baifen_cha">
+	        <p onclick="toggleSubDropdown('subDropdown_baifen_cha_1')">液体沙拉</p>
+	        <div class="sub-dropdown" id="subDropdown_baifen_cha_1">
+	            <p>形体+羽衣液体沙拉</p>
+	        </div>
+			<p onclick="toggleSubDropdown('subDropdown_baifen_cha_2')">原叶轻乳茶</p>
+			<div class="sub-dropdown" id="subDropdown_baifen_cha_2">
+			    <p>竹生空野</p>
+			    <p>茉立绣窗</p>
+			    <p>拾柴煎茶</p>
+			    <p>碧螺春山</p>
+				<p>桂落满陇</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_baifen_cha_3')">山野手作</p>
+			<div class="sub-dropdown" id="subDropdown_baifen_cha_3">
+			    <p>山野栗子奶奶</p>
+			    <p>山野栗子鲜奶茶</p>
+				<p>山野手作芋泥米麻薯</p>
+				<p>松露可可锡兰</p>
+				<p>山野生榨黄皮</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_baifen_cha_4')">鲜奶/鲜奶茶</p>
+			<div class="sub-dropdown" id="subDropdown_baifen_cha_4">
+			    <p>元气娇颜膏胶饮</p>
+			    <p>芋泥啵啵鲜奶</p>
+			    <p>芋圆啵啵文山青鲜奶茶</p>
+			    <p>黑糖BiuBiuBiu鲜奶</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_baifen_cha_5')">永望咖啡</p>
+			<div class="sub-dropdown" id="subDropdown_baifen_cha_5">
+			    <p>提拉米苏拿铁</p>
+				<p>生榨黄皮美式</p>
+				<p>大橘美式</p>
+				<p>鲜葡萄茉莉美式</p>
+				<p>鲜橙茉莉美式（整颗鲜橙）</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_baifen_cha_6')">当季柠檬</p>
+			<div class="sub-dropdown" id="subDropdown_baifen_cha_6">
+			    <p>暴打红石榴柠檬茶</p>
+			    <p>暴打鸭屎香柠檬茶</p>
+				<p>暴打碧螺春柠檬茶</p>
+				<p>暴打葡萄柠檬茶</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_baifen_cha_7')">活力真果茶</p>
+			<div class="sub-dropdown" id="subDropdown_baifen_cha_7">
+			    <p>手剥红石榴</p>
+			    <p>龙眼白月光</p>
+			    <p>茉立青提</p>
+			    <p>杨枝甘露</p>
+			    <p>芒椰小三圆</p>
+			    <p>西瓜冰冰茶</p>
+			    <p>来一桶西瓜冰冰茶</p>
+			    <p>手舂肉肉葡萄奶缇</p>
+			    <p>手舂肉肉葡萄（无奶缇）</p>
+			    <p>大橘青提</p>
+			    <p>春茶十二月</p>
+			    <p>来一桶春茶十二月</p>
+			    <p>凤梨春晓</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_baifen_cha_8')">原叶现泡茶</p>
+			<div class="sub-dropdown" id="subDropdown_baifen_cha_8">
+			    <p>凤凰单丛鸭屎香</p>
+			    <p>雪芽茉莉</p>
+				<p>蒸青绿茶</p>
+			</div>
+	    </div>
+	    
+	    <!-- C组 -->
+	    <div class="section-title">C</div>
+	    <div class="icon" onclick="toggleDropdown('dropdown_chabaidao')">
+	        <img src="icon/IMG_8177.PNG" alt="茶百道">
+	        <p>茶百道</p>
+	    </div>
+	    <div class="dropdown-menu" id="dropdown_chabaidao">
+	        <p onclick="toggleSubDropdown('subDropdown_chabaidao_1')">金萱乌龙</p>
+	        <div class="sub-dropdown" id="subDropdown_chabaidao_1">
+	            <p>桂花金萱奶冻</p>
+	            <p>椰椰桂花乌龙</p>
+	            <p>金萱乌龙</p>
+	        </div>
+			<p onclick="toggleSubDropdown('subDropdown_chabaidao_2')">新品种草</p>
+			<div class="sub-dropdown" id="subDropdown_chabaidao_2">
+			    <p>奶白酒麻薯奶绿</p>
+			    <p>奶白酒乌龙</p>
+			    <p>茉莉芭乐</p>
+			    <p>活菌·芭乐酸奶昔</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_chabaidao_3')">超厚芋泥</p>
+			<div class="sub-dropdown" id="subDropdown_chabaidao_3">
+			    <p>超厚芋泥鲜奶</p>
+			    <p>超厚芋泥奶茶</p>
+			    <p>超厚芋泥奶绿</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_chabaidao_4')">招牌奶茶</p>
+			<div class="sub-dropdown" id="subDropdown_chabaidao_4">
+			    <p>茉莉奶绿</p>
+			    <p>豆乳米麻薯</p>
+			    <p>豆乳玉麒麟</p>
+			    <p>招牌芋圆奶茶</p>
+			    <p>黑糖珍珠奶茶</p>
+			    <p>奧利奧奶茶</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_chabaidao_5')">真鲜奶茶</p>
+			<div class="sub-dropdown" id="subDropdown_chabaidao_5">
+			    <p>鲜奶玫瑰奶绿</p>
+			    <p>鲜奶奇兰乌龙</p>
+			    <p>鲜奶茉莉奶绿</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_chabaidao_6')">清爽鲜果</p>
+			<div class="sub-dropdown" id="subDropdown_chabaidao_6">
+			    <p>西瓜啵啵</p>
+			    <p>生椰西瓜</p>
+			    <p>紫气葡萄冻冻</p>
+			    <p>百香凤梨</p>
+			    <p>手剥鲜石榴茉莉</p>
+			    <p>手剥鲜石榴玫瑰椰</p>
+			    <p>超级大瓜</p>
+			    <p>杨枝甘露</p>
+			    <p>紫气葡萄芝士</p>
+			    <p>青提茉莉</p>
+			    <p>多芒杨枝甘露</p>
+			    <p>芒芒生打椰</p>
+				<p>超级杯水果茶</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_chabaidao_7')">神奇水果</p>
+			<div class="sub-dropdown" id="subDropdown_chabaidao_7">
+			    <p>真梅醉•青梅绿茶</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_chabaidao_8')">灵感奶茶</p>
+			<div class="sub-dropdown" id="subDropdown_chabaidao_8">
+			    <p>盐盐冰淇淋乌龙</p>
+			    <p>双球冰淇淋红茶</p>
+			    <p>轻芝抹茶椰青</p>
+			    <p>轻芝红茶椰青</p>
+			    <p>抹茶奶布丁</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_chabaidao_9')">千亿活菌酸奶昔</p>
+			<div class="sub-dropdown" id="subDropdown_chabaidao_9">
+			    <p>活菌・酸奶紫米露</p>
+			    <p>活菌•凤梨酸奶昔</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_chabaidao_10')">沁爽柠檬茶</p>
+			<div class="sub-dropdown" id="subDropdown_chabaidao_10">
+			    <p>老盐柠檬茶</p>
+			    <p>凤梨柠檬茶</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_chabaidao_11')">轻松现泡茶</p>
+			<div class="sub-dropdown" id="subDropdown_chabaidao_11">
+			    <p>绿茶</p>
+			    <p>岩茶</p>
+			    <p>红茶</p>
+			</div>
+	    </div>
+	    <div class="icon" onclick="toggleDropdown('dropdown_chayan_yueshe')">
+	        <img src="icon/IMG_8138.PNG" alt="茶颜悦色">
+	        <p>茶颜悦色</p>
+	    </div>
+	    <div class="dropdown-menu" id="dropdown_chayan_yueshe">
+	        <p onclick="toggleSubDropdown('subDropdown_chayan_yueshe_1')">当季主推</p>
+	        <div class="sub-dropdown" id="subDropdown_chayan_yueshe_1">
+	            <p>岁月从不败美人</p>
+				<p>嫌弃3.0·睡到人间饭熟时</p>
+				<p>一问三不栀</p>
+				<p>夏虫不语冰•可以吃冰</p>
+				<p>不食人间烟火</p>
+				<p>桂花弄</p>
+				<p>桂酿秋</p>
+				<p>不知冬</p>
+				<p>抹茶葡提•筝筝版</p>
+	        </div>
+			<p onclick="toggleSubDropdown('subDropdown_chayan_yueshe_2')">糖水铺子</p>
+			<div class="sub-dropdown" id="subDropdown_chayan_yueshe_2">
+			    <p>藕断丝连莲</p>
+			    <p>三品芝麻糊</p>
+				<p>酥山-桂花乌龙味</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_chayan_yueshe_3')">限量稀缺季</p>
+			<div class="sub-dropdown" id="subDropdown_chayan_yueshe_3">
+			    <p>岁月从不败美人</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_chayan_yueshe_4')">清浅奶盖篇</p>
+			<div class="sub-dropdown" id="subDropdown_chayan_yueshe_4">
+			    <p>桂酿秋</p>
+				<p>桃花坞</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_chayan_yueshe_5')">涓滴山丘篇</p>
+			<div class="sub-dropdown" id="subDropdown_chayan_yueshe_5">
+			    <p>嫌弃3.0·睡到人间饭熟时</p>
+			    <p>春来鸟不惊</p>
+			    <p>夏虫不语冰•可以吃冰</p>
+			    <p>不食人间烟火</p>
+			    <p>一问三不栀</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_chayan_yueshe_6')">忌廉篇</p>
+			<div class="sub-dropdown" id="subDropdown_chayan_yueshe_6">
+			    <p>幽兰拿铁</p>
+			    <p>蔓越阑珊</p>
+			    <p>三季虫</p>
+			    <p>人间烟火</p>
+			    <p>抹茶葡提·筝筝版</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_chayan_yueshe_7')">沫泡篇</p>
+			<div class="sub-dropdown" id="subDropdown_chayan_yueshe_7">
+			    <p>不知冬</p>
+			    <p>素颜锡兰</p>
+			    <p>筝筝纸鸢</p>
+			    <p>声声乌龙</p>
+			    <p>烟火易冷</p>
+			    <p>栀晓</p>
+			    <p>栀子生椰</p>
+			    <p>风栖绿桂</p>
+			    <p>少年生椰</p>
+			    <p>幽兰琉璃</p>
+			    <p>桂花弄</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_chayan_yueshe_8')">创意原叶篇</p>
+			<div class="sub-dropdown" id="subDropdown_chayan_yueshe_8">
+			    <p>浮云沉香</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_chayan_yueshe_9')">冷泡茶</p>
+			<div class="sub-dropdown" id="subDropdown_chayan_yueshe_9">
+			    <p>无忧冷泡茶-空谷</p>
+			</div>
+	    </div>
+		<div class="icon" onclick="toggleDropdown('dropdown_coco')">
+		    <img src="icon/WechatIMG578.jpg" alt="CoCo">
+		    <p>CoCo</p>
+		</div>
+		<div class="dropdown-menu" id="dropdown_coco">
+		    <p onclick="toggleSubDropdown('subDropdown_coco_1')">时令上新</p>
+		    <div class="sub-dropdown" id="subDropdown_coco_1">
+		        <p>瀑布黑糖珍珠牛乳茶</p>
+		        <p>瀑布黑糖珍珠牛乳</p>
+		        <p>懒人红石榴</p>
+		        <p>懒人石榴酸奶绿</p>
+		        <p>懒人石榴冰</p>
+		        <p>抹茶红豆牛乳</p>
+		        <p>一抹清茉（抹茶轻乳茶）</p>
+		        <p>抹茶大福</p>
+				<p>太妃鸳鸯奶茶</p>
+				<p>太妃焦糖奶茶</p>
+		    </div>
+		    <p onclick="toggleSubDropdown('subDropdown_coco_2')">手作真谷物</p>
+		    <div class="sub-dropdown" id="subDropdown_coco_2">
+		        <p>双倍鲜芋奶绿</p>
+		        <p>鲜芋奶茶</p>
+				<p>青稞奶茶</p>
+		        <p>现煮红豆奶茶</p>
+		        <p>鲜芋大福</p>
+		        <p>鲜芋牛奶</p>
+		        <p>现煮青稞红豆牛奶</p>
+		        <p>鲜芋青稞牛奶</p>
+		        <p>鲜芋芋圆牛奶</p>
+		        <p>鲜芋青稞大红袍奶茶</p>
+		    </div>
+			<p onclick="toggleSubDropdown('subDropdown_coco_3')">巧克力牛奶</p>
+			<div class="sub-dropdown" id="subDropdown_coco_3">
+			    <p>CoCo巧克力牛奶</p>
+			    <p>珍珠巧克力牛奶</p>
+			    <p>双拼巧克力牛奶</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_coco_4')">好喝轻负担</p>
+			<div class="sub-dropdown" id="subDropdown_coco_4">
+			    <p>沐春风（茉莉轻乳茶）</p>
+			    <p>岩韵大红袍</p>
+			    <p>清香茉莉绿</p>
+			    <p>高韵红茶</p>
+			    <p>珍珠牛乳茶</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_coco_5')">大口喝果茶</p>
+			<div class="sub-dropdown" id="subDropdown_coco_5">
+			    <p>鲜柠檬茶</p>
+			    <p>鲜百香橙橙</p>
+			    <p>金桔柠檬汁</p>
+			    <p>鲜橙满满</p>
+			    <p>芒果绿茶</p>
+				<p>手打柠檬鸭屎香</p>
+				<p>一桶柠檬鸭屎香</p>
+			    <p>四季柠檬水</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_coco_6')">小Co经典奶茶</p>
+			<div class="sub-dropdown" id="subDropdown_coco_6">
+			    <p>CoCo奶茶</p>
+			    <p>茉香奶绿</p>
+			    <p>珍珠奶茶</p>
+			    <p>大红袍珍珠奶茶</p>
+			    <p>奶茶三兄弟</p>
+			    <p>奶茶吨吨桶</p>
+			    <p>芒果大福</p>
+			    <p>芋圆奶茶</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_coco_7')">找有料果茶</p>
+			<div class="sub-dropdown" id="subDropdown_coco_7">
+			    <p>鲜百香双响炮</p>
+			    <p>生椰杨枝甘露</p>
+			    <p>星空葡萄</p>
+			    <p>闪光爆爆葡萄</p>
+			    <p>莓莓果茶</p>
+			    <p>红果小姐姐</p>
+			    <p>粉粉莓莓</p>
+				<p>榴莲麻薯椰</p>
+				<p>加油牛油果</p>
+				<p>牛油果橙橙</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_coco_8')">新手咖啡</p>
+			<div class="sub-dropdown" id="subDropdown_coco_8">
+			    <p>茉莉花拿铁咖啡</p>
+			    <p>米乳拿铁</p>
+			    <p>香橙冷萃美式</p>
+			    <p>手打柠檬冷萃美式</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_coco_9')">金奖咖啡</p>
+			<div class="sub-dropdown" id="subDropdown_coco_9">
+			    <p>美式咖啡</p>
+			    <p>生椰拿铁咖啡</p>
+			    <p>拿铁咖啡</p>
+			</div>
+		</div>
+	    
+	    <!-- G组 -->
+	    <div class="section-title">G</div>
+	    <div class="icon" onclick="toggleDropdown('dropdown_gongcha')">
+	        <img src="icon/IMG_8195.PNG" alt="贡茶">
+	        <p>贡茶</p>
+	    </div>
+	    <div class="dropdown-menu" id="dropdown_gongcha">
+	        <p onclick="toggleSubDropdown('subDropdown_gongcha_1')">时令上新</p>
+	        <div class="sub-dropdown" id="subDropdown_gongcha_1">
+	            <p>手剥果粒橙（0添加）</p>
+	            <p>东方乌龙（轻乳茶）</p>
+	            <p>东方茉莉（轻乳茶）</p>
+	            <p>中国红（轻乳茶）</p>
+	        </div>
+			<p onclick="toggleSubDropdown('subDropdown_gongcha_2')">手捣芋泥</p>
+			<div class="sub-dropdown" id="subDropdown_gongcha_2">
+			    <p>芋泥波波抹茶/可可</p>
+			    <p>椰乳芋泥芒芒</p>
+			    <p>厚芋泥燕麦牛奶</p>
+			    <p>芋泥奶茶</p>
+			    <p>芋泥波波奶茶</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_gongcha_3')">鲜奶茗茶</p>
+			<div class="sub-dropdown" id="subDropdown_gongcha_3">
+			    <p>东方乌龙（轻乳茶）</p>
+			    <p>东方茉莉（轻乳茶）</p>
+			    <p>中国红（轻乳茶）</p>
+			    <p>红豆布丁奶茶</p>
+			    <p>红豆奶茶</p>
+			    <p>薄荷奶绿</p>
+			    <p>黑糖珍珠奶茶</p>
+			    <p>烧仙草奶茶</p>
+			    <p>珍珠奶茶</p>
+			    <p>燕麦奶茶</p>
+			    <p>乌龙奶青</p>
+			    <p>茉香奶绿</p>
+			    <p>贡茶烤奶</p>
+			    <p>爆珠奶茶</p>
+			    <p>熊猫奶茶</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_gongcha_4')">白椰光（生打椰）</p>
+			<div class="sub-dropdown" id="subDropdown_gongcha_4">
+			    <p>白月光（生打椰）</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_gongcha_5')">鲜果茗茶</p>
+			<div class="sub-dropdown" id="subDropdown_gongcha_5">
+			    <p>蜜桃乌龙（含多肉）</p>
+			    <p>草莓啵啵</p>
+			    <p>杨枝甘露（轻盈版）</p>
+			    <p>生椰芒芒</p>
+			    <p>百香双响炮</p>
+			    <p>一颗柠檬茶</p>
+			    <p>百香凤梨</p>
+			    <p>杨枝甘露</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_gongcha_6')">畅饮1000cc</p>
+			<div class="sub-dropdown" id="subDropdown_gongcha_6">
+			    <p>一桶柠檬茶</p>
+			    <p>葡萄啵啵桶</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_gongcha_7')">奶油手作</p>
+			<div class="sub-dropdown" id="subDropdown_gongcha_7">
+			    <p>葡萄星冰乐</p>
+			    <p>芒果星冰乐</p>
+			    <p>蓝莓星冰乐</p>
+			    <p>抹茶星冰乐</p>
+			    <p>巧克力星冰乐</p>
+			    <p>茉莉鲜牛乳</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_gongcha_8')">纯茶鲜泡</p>
+			<div class="sub-dropdown" id="subDropdown_gongcha_8">
+			    <p>韵香红茶</p>
+			    <p>冻顶乌龙</p>
+			    <p>春水茉莉</p>
+			    <p>白桃乌龙</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_gongcha_9')">现榨果汁</p>
+			<div class="sub-dropdown" id="subDropdown_gongcha_9">
+			    <p>鲜榨芒果汁</p>
+			    <p>一颗柠檬水</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_gongcha_10')">暖冬热饮</p>
+			<div class="sub-dropdown" id="subDropdown_gongcha_10">
+			    <p>红糖姜牛乳</p>
+			    <p>红糖姜茶</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_gongcha_11')">芝士茗茶</p>
+			<div class="sub-dropdown" id="subDropdown_gongcha_11">
+			    <p>芝士乌龙</p>
+			    <p>芝士红茶</p>
+			    <p>芝士可可</p>
+			    <p>芝士茉莉</p>
+			    <p>熊猫奶盖</p>
+			    <p>芝士抹茶</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_gongcha_12')">醇品咖啡</p>
+			<div class="sub-dropdown" id="subDropdown_gongcha_12">
+			    <p>咖啡拿铁</p>
+			    <p>美式咖啡</p>
+			    <p>生椰拿铁</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_gongcha_13')">鲜奶手作</p>
+			<div class="sub-dropdown" id="subDropdown_gongcha_13">
+			    <p>牛奶烧仙草</p>
+			    <p>贡茶抹茶</p>
+			    <p>鲜奶可可</p>
+			    <p>半杯料可可</p>
+			    <p>半杯料抹茶</p>
+			</div>
+	    </div>
+		<div class="icon" onclick="toggleDropdown('dropdown_ancient_tea')">
+		    <img src="icon/IMG_8157.PNG" alt="古茗">
+		    <p>古茗</p>
+		</div>
+		<div class="dropdown-menu" id="dropdown_ancient_tea">
+		    <p onclick="toggleSubDropdown('subDropdown_ancient_tea_1')">古茗推荐</p>
+		    <div class="sub-dropdown" id="subDropdown_ancient_tea_1">
+		        <p>红岩桃胶炖奶</p>
+				<p>红岩咸奶茶</p>
+				<p>云岭茉莉白</p>
+				<p>黑糖珍珠牛乳</p>
+				<p>生椰抹茶麻薯</p>
+				<p>芋泥牛乳小丸紫</p>
+				<p>杨枝甘露轻盈版</p>
+				<p>布蕾脆脆奶芙</p>
+				<p>功夫生椰拿铁</p>
+				<p>提拉米苏拿铁</p>
+		    </div>
+			<p onclick="toggleSubDropdown('subDropdown_ancient_tea_2')">原叶·鲜奶茶</p>
+			<div class="sub-dropdown" id="subDropdown_ancient_tea_2">
+			    <p>云岭茉莉白</p>
+			    <p>桃隐乌龙香</p>
+			    <p>十里江南桂</p>
+				<p>千里暮山红</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_ancient_tea_3')">咖啡·现磨</p>
+			<div class="sub-dropdown" id="subDropdown_ancient_tea_3">
+			    <p>焦糖丝绒拿铁*</p>
+			    <p>法式黄油拿铁</p>
+			    <p>功夫拿铁</p>
+				<p>功夫生椰拿铁</p>
+				<p>桂花拿铁</p>
+				<p>厚道榴莲拿铁</p>
+				<p>提拉米苏拿铁</p>
+				<p>功夫美式</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_ancient_tea_4')">奶茶·料多多</p>
+			<div class="sub-dropdown" id="subDropdown_ancient_tea_4">
+			    <p>古茗奶茶</p>
+			    <p>茉莉奶绿</p>
+			    <p>大叔奶茶</p>
+			    <p>桂花酒酿小丸紫</p>
+			    <p>桂花莲子奶</p>
+			    <p>桃气麻薯小丸紫</p>
+			    <p>什么都有</p>
+			    <p>茉莉奶芙</p>
+			    <p>布蕾脆脆奶芙</p>
+			    <p>布丁西米露</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_ancient_tea_5')">季节·限定</p>
+			<div class="sub-dropdown" id="subDropdown_ancient_tea_5">
+			    <p>茉香芋泥奶绿</p>
+			    <p>芋泥牛乳小丸紫</p>
+			    <p>黑糖珍珠牛乳</p>
+			    <p>黑糖珍珠撞布蕾</p>
+				<p>红岩桃胶炖奶</p>
+				<p>红岩咸奶茶</p>
+			</div><p onclick="toggleSubDropdown('subDropdown_ancient_tea_6')">抹茶·江南绿</p>
+		    <div class="sub-dropdown" id="subDropdown_ancient_tea_6">
+		        <p>生椰抹茶麻薯</p>
+		        <p>抹茶布蕾</p>
+		        <p>芝士抹茶牛乳</p>
+		        <p>茉香云顶抹茶</p>
+		    </div>
+			<p onclick="toggleSubDropdown('subDropdown_ancient_tea_7')">果茶·真果肉</p>
+			<div class="sub-dropdown" id="subDropdown_ancient_tea_7">
+			    <p>百香双重奏</p>
+			    <p>白玉龙眼椰</p>
+			    <p>杨枝甘露轻盈版</p>
+			    <p>杨枝甘露椰奶</p>
+			    <p>榴莲芒芒麻薯</p>
+			    <p>爆汁葡萄轻柠</p>
+				<p>超A芝士葡萄</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_ancient_tea_8')">原叶·芝士茶</p>
+			<div class="sub-dropdown" id="subDropdown_ancient_tea_8">
+			    <p>曲香茉莉</p>
+			    <p>芝士茉莉</p>
+			</div>
+		</div>
+	
+	    <!-- H组 -->
+	    <div class="section-title">H</div>
+	    <div class="icon" onclick="toggleDropdown('dropdown_hushangayi')">
+	        <img src="icon/IMG_8151.PNG" alt="沪上阿姨">
+	        <p>沪上阿姨</p>
+	    </div>
+	    <div class="dropdown-menu" id="dropdown_hushangayi">
+	        <p onclick="toggleSubDropdown('subDropdown_hushangayi_1')">老板推荐</p>
+	        <div class="sub-dropdown" id="subDropdown_hushangayi_1">
+	            <p>厚芋泥波波奶茶</p>
+                <p>杨枝甘露经典版</p>
+                <p>浅浅清茉</p>
+				<p>手作黑糖波波牛乳茶</p>
+				<p>超嗲草莓大福</p>
+				<p>多肉葡萄金砖</p>
+	        </div>
+	        <p onclick="toggleSubDropdown('subDropdown_hushangayi_2')">热销·多料奶茶</p>
+	        <div class="sub-dropdown" id="subDropdown_hushangayi_2">
+	            <p>厚芋泥生打椰</p>
+	            <p>厚芋泥桃胶大满贯</p>
+	            <p>厚芋泥波波奶茶</p>
+				<p>自由抹茶波波</p>
+				<p>波波奶茶</p>
+				<p>茉莉奶绿</p>
+				<p>椰果奶茶</p>
+	        </div>
+			<p onclick="toggleSubDropdown('subDropdown_hushangayi_3')">探索·多肉果茶</p>
+			<div class="sub-dropdown" id="subDropdown_hushangayi_3">
+			    <p>杨枝甘露经典版</p>
+			    <p>超嗲草莓大福</p>
+				<p>多肉葡萄金砖</p>
+			    <p>仙仙玫瑰青提</p>
+			    <p>杨枝甘露清爽版</p>
+			    <p>桃桃大福</p>
+			    <p>爆汁葡萄冻</p>
+			    <p>wow山楂莓莓</p>
+			    <p>wow山楂雪山莓(无雪顶)</p>
+			    <p>wow山楂浮云桂</p>
+			    <p>自由抹茶莓莓</p>
+			    <p>芝士葡萄奶盖</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_hushangayi_4')">新创·轻乳茶</p>
+			<div class="sub-dropdown" id="subDropdown_hushangayi_4">
+			    <p>浅浅清茉</p>
+			    <p>幽幽红韵</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_hushangayi_5')">探索·轻果茶</p>
+			<div class="sub-dropdown" id="subDropdown_hushangayi_5">
+			    <p>桃桃蜜柚</p>
+				<p>大红袍鲜柠茶</p>
+				<p>红韵柠檬茶</p>
+				<p>茉莉柠檬茶</p>
+				<p>仙仙青提柠檬</p>
+				<p>草莓桃桃茶</p>
+				<p>百香三重奏</p>
+				<p>鲜柠生打椰</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_hushangayi_6')">摩登·东方茶/咖</p>
+			<div class="sub-dropdown" id="subDropdown_hushangayi_6">
+				<p>400次生椰拿铁</p>
+				<p>400次轻乳拿铁</p>
+			    <p>经典美式</p>
+			    <p>生椰拿铁</p>
+			    <p>鲜爽茉莉花茶</p>
+			    <p>茉莉茶咖</p>
+			    <p>丝绒金奖拿铁</p>
+			    <p>金奖生椰拿铁</p>
+			    <p>金奖美式</p>
+			</div>
+	    </div>
+	    
+	    <!-- L组 -->
+	    <div class="section-title">L</div>
+	    <div class="icon" onclick="toggleDropdown('dropdown_lelecha')">
+	        <img src="icon/IMG_8181.PNG" alt="乐乐茶">
+	        <p>乐乐茶</p>
+	    </div>
+	    <div class="dropdown-menu" id="dropdown_lelecha">
+	        <p onclick="toggleSubDropdown('subDropdown_lelecha_1')">鲜配果蔬瓶</p>
+	        <div class="sub-dropdown" id="subDropdown_lelecha_1">
+	            <p>鲜配纤体瓶</p>
+	            <p>鲜配发光瓶</p>
+	        </div>
+	        <p onclick="toggleSubDropdown('subDropdown_lelecha_2')">热卖推荐</p>
+	        <div class="sub-dropdown" id="subDropdown_lelecha_2">
+	            <p>黑糖波霸脏脏茶（牛乳）</p>
+	            <p>黑糖波霸脏脏茶（锡兰）</p>
+	            <p>黑糖波霸脏脏茶（乌龙）</p>
+	            <p>大口草莓桃</p>
+	            <p>琥珀锡兰</p>
+	            <p>桂花手打黄米芋</p>
+	        </div>
+			<p onclick="toggleSubDropdown('subDropdown_lelecha_3')">醇厚奶茶</p>
+			<div class="sub-dropdown" id="subDropdown_lelecha_3">
+			    <p>糖炒栗子手打麻薯</p>
+			    <p>糖炒栗子黄金糯叽叽</p>
+			    <p>焦糖饼干脏脏茶</p>
+			    <p>黑糖波霸脏脏茶（牛乳）</p>
+			    <p>抹茶波霸脏脏茶</p>
+				<p>抹茶波霸米麻薯</p>
+				<p>芋泥麻薯红锡兰</p>
+				<p>黄米麻薯金乌龙</p>
+				<p>手作芋泥生打椰</p>
+				<p>超厚手打牛奶芋</p>
+				<p>黑糖波霸脏脏茶（乌龙）</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_lelecha_4')">原叶茗茶</p>
+			<div class="sub-dropdown" id="subDropdown_lelecha_4">
+			    <p>奶油话梅牛乳茶</p>
+				<p>六十八朵茉莉</p>
+				<p>七窨茉莉抹茶酪酪</p>
+				<p>四重香乌龙牛乳茶</p>
+				<p>福鼎老白（折桂香）</p>
+				<p>茉莉清饮</p>
+				<p>乌龙清饮</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_lelecha_5')">随心鲜果</p>
+			<div class="sub-dropdown" id="subDropdown_lelecha_5">
+				<p>大口草莓桃</p>
+				<p>芒果生打椰</p>
+				<p>血色暗夜桑葚葡萄</p>
+				<p>生椰流心柿</p>
+				<p>桂花流心柿</p>
+				<p>洛神莲雾石榴水</p>
+			    <p>大橘满满</p>
+			    <p>巨大颗手剥葡萄</p>
+			    <p>杨枝甘露冰冰茶</p>
+			    <p>冷茉石榴</p>
+			    <p>冷茉青提</p>
+			    <p>大橘青提</p>
+			    <p>青提柠柠茶</p>
+			    <p>大口苹果桃</p>
+			    <p>蜜瓜椰椰</p>
+			    <p>栖玉蜜瓜冰</p>
+			    <p>芒果糯叽叽</p>
+				<p>畅！西梅桃李</p>
+				<p>东方七窨香柠茶</p>
+				<p>夏莓柠柠茶</p>
+				<p>夏萄柠柠茶</p>
+				<p>生打生椰冻</p>
+				<p>草莓桃子酪酪</p>
+				<p>葡萄酪酪</p>
+			</div>
+	    </div>
+	    
+	    <!-- M组 -->
+	    <div class="section-title">M</div>
+	    <div class="icon" onclick="toggleDropdown('dropdown_mawu')">
+	        <img src="icon/IMG_8193.PNG" alt="马伍旺饮料厂">
+	        <p>马伍旺饮料厂</p>
+	    </div>
+	    <div class="dropdown-menu" id="dropdown_mawu">
+	        <p onclick="toggleSubDropdown('subDropdown_mawu_1')">超级上新</p>
+	        <div class="sub-dropdown" id="subDropdown_mawu_1">
+	            <p>超级芒果</p>
+	            <p>超浓·有机抹茶</p>
+	        </div>
+	        <p onclick="toggleSubDropdown('subDropdown_mawu_2')">王牌雪顶</p>
+	        <div class="sub-dropdown" id="subDropdown_mawu_2">
+	            <p>雪顶幽兰</p>
+	            <p>雪顶观音</p>
+	            <p>雪顶含脆</p>
+	            <p>雪顶茉莉</p>
+	            <p>雪顶糯香普洱</p>
+				<p>雪顶米乳普洱</p>
+	            <p>雪顶富桂</p>
+	        </div>
+			<p onclick="toggleSubDropdown('subDropdown_mawu_3')">原叶鲜奶茶</p>
+			<div class="sub-dropdown" id="subDropdown_mawu_3">
+			    <p>素颜观音</p>
+			    <p>茉莉花香</p>
+			    <p>糯香普洱</p>
+			    <p>雨前龙井</p>
+			    <p>抹茶龙井</p>
+			    <p>桃香乌龙</p>
+			    <p>素颜幽澜</p>
+			    <p>花开富桂</p>
+			    <p>抹茶观音</p>
+			    <p>米乳普洱</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_mawu_4')">手作车间</p>
+			<div class="sub-dropdown" id="subDropdown_mawu_4">
+			    <p>水牛乳·米麻薯</p>
+				<p>超级芒果</p>
+				<p>超浓·有机抹茶</p>
+				<p>龙眼桂花冰</p>
+				<p>手剥龙眼·米麻薯</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_mawu_5')">整口椰子</p>
+			<div class="sub-dropdown" id="subDropdown_mawu_5">
+			    <p>马蹄椰子水</p>
+			    <p>云朵粉椰</p>
+			    <p>澟蓝粉椰</p>
+			    <p>冰蓝生椰</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_mawu_6')">柠檬蔬果</p>
+			<div class="sub-dropdown" id="subDropdown_mawu_6">
+			    <p>暴打香水柠</p>
+			    <p>苦瓜柠檬茶</p>
+			    <p>香菜柠檬茶</p>
+			    <p>柠檬生椰</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_mawu_7')">季节鲜果</p>
+			<div class="sub-dropdown" id="subDropdown_mawu_7">
+			    <p>青提爆柠</p>
+			    <p>整口青提</p>
+			    <p>紫气葡萄</p>
+			</div>
+	    </div>
+	    <div class="icon" onclick="toggleDropdown('dropdown_mixuebingcheng')">
+	        <img src="icon/IMG_8131.PNG" alt="蜜雪冰城">
+	        <p>蜜雪冰城</p>
+	    </div>
+	    <div class="dropdown-menu" id="dropdown_mixuebingcheng">
+			<p onclick="toggleSubDropdown('subDropdown_mixuebingcheng_1')">当季新品</p>
+			<div class="sub-dropdown" id="subDropdown_mixuebingcheng_1">
+			    <p>厚芋泥奶茶(升级版)</p>
+			    <p>芋泥芒芒</p>
+			    <p>芋泥好暖椰(升级版)</p>
+			    <p>东方乌龙轻乳茶</p>
+			    <p>芋圆葡萄(升级版)</p>
+			    <p>东方乌龙奶盖茶</p>
+			    <p>东方乌龙茶</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_mixuebingcheng_2')">蜜雪经典</p>
+			<div class="sub-dropdown" id="subDropdown_mixuebingcheng_2">
+			    <p>茉莉奶绿</p>
+			    <p>冰鲜柠檬水</p>
+			    <p>新鲜冰淇淋</p>
+			    <p>珍珠奶茶</p>
+			    <p>棒打鲜橙</p>
+			    <p>满杯百香果(升级版)</p>
+			    <p>芋圆葡萄(升级版)</p>
+			    <p>蜜桃四季春(新)</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_mixuebingcheng_3')">醇香奶茶</p>
+			<div class="sub-dropdown" id="subDropdown_mixuebingcheng_3">
+			    <p>珍珠奶茶</p>
+			    <p>厚芋泥奶茶（升级版)</p>
+			    <p>芋泥芒芒</p>
+			    <p>芋泥好暖椰（升级版)</p>
+			    <p>椰果奶茶</p>
+			    <p>红豆奶茶</p>
+			    <p>三拼霸霸奶茶</p>
+			    <p>布丁奶茶</p>
+			    <p>双拼奶茶</p>
+			    <p>原味奶茶</p>
+			    <p>芋圆奶茶</p>
+			    <p>富桂糯糯茶</p>
+			    <p>红豆好糯椰</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_mixuebingcheng_4')">真鲜果茶</p>
+			<div class="sub-dropdown" id="subDropdown_mixuebingcheng_4">
+			    <p>冰鲜柠檬水</p>
+				<p>棒打鲜橙</p>
+				<p>满杯百香果(升级版)</p>
+				<p>芋圆葡萄(升级版)</p>
+				<p>蜜桃四季春(新)</p>
+				<p>蜜桃四季春(升级版)</p>
+				<p>草莓啵啵</p>
+				<p>桑葚莓莓(升级版)</p>
+				<p>桃喜芒芒</p>
+				<p>柠檬绿茶</p>
+				<p>菠萝百香果</p>
+				<p>菠萝甜心橙</p>
+				<p>糯香桂花茶</p>
+				<p>青瓜菠萝茶</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_mixuebingcheng_5')">轻乳系列</p>
+			<div class="sub-dropdown" id="subDropdown_mixuebingcheng_5">
+			    <p>茉莉奶绿</p>
+				<p>东方乌龙轻乳茶</p>
+				<p>港式杨枝甘露(糯米糍版)</p>
+				<p>糯香奶绿</p>
+				<p>蜜桃甘露(新)</p>
+				<p>草莓椰奶露</p>
+				<p>港式杨枝甘露(新)</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_mixuebingcheng_6')">新鲜冰淇淋</p>
+			<div class="sub-dropdown" id="subDropdown_mixuebingcheng_6">
+				<p>新鲜冰淇淋(黑芝麻脆筒)</p>
+			    <p>脆皮大圣代</p>
+			    <p>雪王大圣代（奥利奥饼干风味）</p>
+			    <p>雪王大圣代（草莓）</p>
+			    <p>草莓摇摇奶昔</p>
+			    <p>桑基摇摇奶昔</p>
+			    <p>雪王小圣代（奥利奥饼干风味）</p>
+			    <p>雪王小圣代（草莓味）</p>
+			    <p>雪王小圣代（芒果）</p>
+			    <p>雪王大圣代（芒果）</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_mixuebingcheng_7')">芝士奶盖</p>
+			<div class="sub-dropdown" id="subDropdown_mixuebingcheng_7">
+			    <p>芝士奶盖四季春</p>
+			    <p>芝士奶盖绿茶</p>
+			    <p>芝士奶盖蜜桃</p>
+			    <p>芝士奶盖桑葚</p>
+			    <p>芝士奶盖富桂茶</p>
+				<p>东方乌龙奶盖茶</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_mixuebingcheng_8')">鲜萃咖啡</p>
+			<div class="sub-dropdown" id="subDropdown_mixuebingcheng_8">
+			    <p>美式咖啡(升级版)</p>
+			    <p>茉莉拿铁咖啡(新)</p>
+			    <p>芝士奶盖咖啡</p>
+			    <p>拿铁咖啡(新)</p>
+			    <p>咖啡椰椰</p>
+			    <p>雪王雪顶咖啡(新)</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_mixuebingcheng_9')">原叶纯茶</p>
+			<div class="sub-dropdown" id="subDropdown_mixuebingcheng_9">
+			    <p>糯香绿茶</p>
+			    <p>茉莉绿茶</p>
+			    <p>高山四季春茶</p>
+				<p>东方乌龙茶</p>
+			</div>
+	    </div>
+	    
+	    <div class="icon" onclick="toggleDropdown('dropdown_molinaibai')">
+	        <img src="icon/IMG_8159.PNG" alt="茉莉奶白">
+	        <p>茉莉奶白</p>
+	    </div>
+	    <div class="dropdown-menu" id="dropdown_molinaibai">
+	        <p onclick="toggleSubDropdown('subDropdown_molinaibai_1')">攻略推荐</p>
+	        <div class="sub-dropdown" id="subDropdown_molinaibai_1">
+	            <p>蜜桃老铁</p>
+	            <p>一口老铁</p>
+				<p>针王苹果</p>
+	        </div>
+	        <p onclick="toggleSubDropdown('subDropdown_molinaibai_2')">必喝榜</p>
+	        <div class="sub-dropdown" id="subDropdown_molinaibai_2">
+	            <p>茉莉奶白</p>
+	            <p>一朵茉莉花</p>
+	            <p>一朵栀子花</p>
+	            <p>栀子奶白</p>
+	            <p>白兰</p>
+	            <p>开心果茉莉椰</p>
+	            <p>抹茶白兰</p>
+	        </div>
+			<p onclick="toggleSubDropdown('subDropdown_molinaibai_3')">米麻薯</p>
+			<div class="sub-dropdown" id="subDropdown_molinaibai_3">
+			    <p>桂花米麻薯</p>
+			    <p>桂花酒酿米麻薯</p>
+			    <p>开心果桂花酒酿米麻薯</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_molinaibai_4')">花香鲜茶</p>
+			<div class="sub-dropdown" id="subDropdown_molinaibai_4">
+			    <p>茉莉针王</p>
+			    <p>针王苹果</p>
+			    <p>抹茶针王</p>
+			    <p>抹茶白兰</p>
+				<p>鸭屎香</p>
+				<p>栀子生椰</p>
+				<p>茉莉奶白</p>
+				<p>栀子奶白</p>
+				<p>白兰</p>
+				<p>柚花龙井</p>
+				<p>永春佛手</p>
+				<p>双倍浓熔岩榛巧</p>
+				<p>白兰熔岩榛巧</p>
+				<p>茉莉熔岩榛巧</p>
+				<p>高山四季春</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_molinaibai_5')">花香云顶</p>
+			<div class="sub-dropdown" id="subDropdown_molinaibai_5">
+			    <p>一朵茉莉花</p>
+			    <p>一朵栀子花</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_molinaibai_6')">花香茗茶</p>
+			<div class="sub-dropdown" id="subDropdown_molinaibai_6">
+			    <p>开心果茉莉椰</p>
+				<p>开心果鸭屎香</p>
+				<p>开心小兰花</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_molinaibai_7')">花香果茶</p>
+			<div class="sub-dropdown" id="subDropdown_molinaibai_7">
+			    <p>茉莉葡萄</p>
+			    <p>开心果茉莉葡萄</p>
+			    <p>茉莉杨枝甘露</p>
+			</div>
+	    </div>
+		
+	    <!-- N组 -->
+	    <div class="section-title">N</div>
+	    <div class="icon" onclick="toggleDropdown('dropdown_naixue')">
+	        <img src="icon/IMG_8116.PNG" alt="奈雪的茶">
+	        <p>奈雪的茶</p>
+	    </div>
+	    <div class="dropdown-menu" id="dropdown_naixue">
+			<p onclick="toggleSubDropdown('subDropdown_naixue_1')">不加糖超级食材</p>
+			<div class="sub-dropdown" id="subDropdown_naixue_1">
+			    <p>不加糖·奈雪血橙西柚</p>
+			    <p>不加糖·奈雪黑葡萄</p>
+			    <p>不加糖·奈雪羽衣甘蓝奇异果</p>
+			</div>
+	        <p onclick="toggleSubDropdown('subDropdown_naixue_2')">霸气鲜果茶</p>
+	        <div class="sub-dropdown" id="subDropdown_naixue_2">
+	            <p>霸气龙眼</p>
+	            <p>霸气芝士草莓</p>
+	            <p>霸气橙子</p>
+	            <p>霸气羽衣甘蓝奇异果</p>
+	            <p>霸气杨枝甘露</p>
+	            <p>霸气葡萄</p>
+	            <p>霸气柠檬油柑</p>
+	            <p>霸气草莓</p>
+	            <p>霸气芒果</p>
+	            <p>霸气芝士葡萄</p>
+	            <p>霸气西柚</p>
+	            <p>霸气玉油柑</p>
+	        </div>
+	        <p onclick="toggleSubDropdown('subDropdown_naixue_3')">原叶鲜奶茶</p>
+	        <div class="sub-dropdown" id="subDropdown_naixue_3">
+	            <p>芋泥芋圆奶茶</p>
+	            <p>超厚芋泥奶茶</p>
+	            <p>茉莉初雪奶茶</p>
+	            <p>金色山脉珍珠奶茶</p>
+				<p>手熬黑糖珍珠鲜牛奶</p>
+				<p>森林观音奶茶</p>
+				<p>黄金麻薯稻谷黄茶奶茶</p>
+				<p>稻谷黄茶奶茶</p>
+	        </div>
+			<p onclick="toggleSubDropdown('subDropdown_naixue_4')">无糖纯茶</p>
+			<div class="sub-dropdown" id="subDropdown_naixue_4">
+			    <p>森林观音</p>
+			    <p>奈雪茉莉初雪</p>
+			    <p>金色山脉</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_naixue_5')">精品咖啡</p>
+			<div class="sub-dropdown" id="subDropdown_naixue_5">
+			    <p>美式咖啡</p>
+			    <p>茉莉初雪茶咖</p>
+			    <p>拿铁咖啡</p>
+			    <p>生椰拿铁</p>
+			</div>
+	    </div>
+	    
+	    <!-- Q组 -->
+	    <div class="section-title">Q</div>
+	    <div class="icon" onclick="toggleDropdown('dropdown_qifentian')">
+	        <img src="icon/IMG_8189.PNG" alt="7分甜">
+	        <p>7分甜</p>
+	    </div>
+	    <div class="dropdown-menu" id="dropdown_qifentian">
+	        <p onclick="toggleSubDropdown('subDropdown_qifentian_1')">双皮奶</p>
+	        <div class="sub-dropdown" id="subDropdown_qifentian_1">
+	            <p>红豆双皮奶</p>
+	            <p>芒果双皮奶</p>
+	            <p>芋泥双皮奶</p>
+				<p>原味双皮奶</p>
+	        </div>
+	        <p onclick="toggleSubDropdown('subDropdown_qifentian_2')">厚芋泥·米麻薯</p>
+	        <div class="sub-dropdown" id="subDropdown_qifentian_2">
+				<p>芋泥麻薯糯糯</p>
+	            <p>芒果麻薯糯糯</p>
+	            <p>芋泥啵啵鲜牛乳</p>
+				<p>芋泥芒芒椰</p>
+				<p>芋泥啵啵奶茶</p>
+	        </div>
+			<p onclick="toggleSubDropdown('subDropdown_qifentian_3')">一颗整梨</p>
+			<div class="sub-dropdown" id="subDropdown_qifentian_3">
+			    <p>牛乳炖梨</p>
+			    <p>一整颗鲜炖梨汤</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_qifentian_4')">招牌杨枝甘露</p>
+			<div class="sub-dropdown" id="subDropdown_qifentian_4">
+			    <p>杨枝甘露（经典版）</p>
+			    <p>生椰杨枝甘露（清爽版）</p>
+			    <p>酸奶杨枝甘露</p>
+			    <p>Mini杨枝甘露</p>
+			    <p>芝芝杨枝甘露</p>
+			    <p>糯叽叭杨枝甘露</p>
+			    <p>榴莲杨枝甘露</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_qifentian_5')">秋日推荐</p>
+			<div class="sub-dropdown" id="subDropdown_qifentian_5">
+			    <p>满杯馥桂龙眼</p>
+			    <p>满杯红石榴</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_qifentian_6')">酸奶奶昔</p>
+			<div class="sub-dropdown" id="subDropdown_qifentian_6">
+			    <p>芒果酸奶奶昔</p>
+				<p>杏运桃桃奶昔</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_qifentian_7')">经典奶茶</p>
+			<div class="sub-dropdown" id="subDropdown_qifentian_7">
+			    <p>茉莉奶绿</p>
+			    <p>红豆芋圆奶茶</p>
+			    <p>红豆西米露</p>
+			    <p>四季奶青</p>
+			    <p>芒椰小丸子</p>
+			    <p>蜜桃轻乌龙奶茶</p>
+			    <p>芒果西米露</p>
+			    <p>什么都有（大杯）</p>
+			    <p>芋泥啵啵奶茶</p>
+			    <p>黑糖啵啵牛乳</p>
+			    <p>黑糖珍珠奶茶</p>
+			    <p>奧利奧芝士啵啵奶茶</p>
+			    <p>爆有料奶茶桶</p>
+			    <p>奧利奧酸奶冰</p>
+			    <p>奧利奧芝士奶茶</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_qifentian_8')">原叶轻乳茶</p>
+			<div class="sub-dropdown" id="subDropdown_qifentian_8">
+			    <p>云间茉莉（翠香茉绿轻乳茶）</p>
+			    <p>花魁观音（兰香乌龙轻乳茶）</p>
+			    <p>馥桂乌龙（桂花乌龙轻乳茶）</p>
+			    <p>云上之滇（玫香滇红轻乳茶）</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_qifentian_9')">欢乐小7冰</p>
+			<div class="sub-dropdown" id="subDropdown_qifentian_9">
+			    <p>奧利奥酸奶冰</p>
+				<p>雪山冰淇淋红茶</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_qifentian_10')">清爽果茶</p>
+			<div class="sub-dropdown" id="subDropdown_qifentian_10">
+			    <p>李有红气</p>
+			    <p>满杯大橘</p>
+			    <p>多肉葡萄</p>
+			    <p>多肉桃桃</p>
+			    <p>黄金百香芒芒</p>
+			    <p>鲜百香双爆珠</p>
+			    <p>百香大橘</p>
+			    <p>你没柿吧</p>
+				<p>小杏运</p>
+				<p>金鱼之夏</p>
+				<p>西瓜甘露冰冰茶</p>
+				<p>手捣西瓜爽爽椰</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_qifentian_11')">正宗好拧茶</p>
+			<div class="sub-dropdown" id="subDropdown_qifentian_11">
+			    <p>超级快乐柠檬水</p>
+			    <p>招牌手打柠檬茶</p>
+			    <p>暴打柠檬红茶</p>
+			    <p>霸7柠檬桶</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_qifentian_12')">霸7大桶</p>
+			<div class="sub-dropdown" id="subDropdown_qifentian_12">
+			    <p>霸7柠檬桶</p>
+			    <p>霸7葡萄桶</p>
+			    <p>霸7柠檬桶</p>
+			    <p>霸7水果茶</p>
+			    <p>霸7西瓜桶</p>
+			    <p>爆有料奶茶桶</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_qifentian_13')">芝士缤纷</p>
+			<div class="sub-dropdown" id="subDropdown_qifentian_13">
+			    <p>芝士芒芒</p>
+			    <p>西瓜甘露冰冰茶（芝士版）</p>
+			    <p>芝士多肉葡萄</p>
+			    <p>芝士多肉桃桃</p>
+			</div>
+	    </div>
+	    
+	    <!-- R组 -->
+	    <div class="section-title">R</div>
+	    <div class="icon" onclick="toggleDropdown('dropdown_ruixingkafei')">
+	        <img src="icon/IMG_8149.PNG" alt="瑞幸咖啡">
+	        <p>瑞幸咖啡</p>
+	    </div>
+	    <div class="dropdown-menu" id="dropdown_ruixingkafei">
+	        <p onclick="toggleSubDropdown('subDropdown_ruixingkafei_1')">下午茶</p>
+	        <div class="sub-dropdown" id="subDropdown_ruixingkafei_1">
+	            <p>生椰锡兰轻乳茶</p>
+	            <p>轻轻茉莉</p>
+	            <p>轻轻乌龙</p>
+				<p>轻咖柠檬茶</p>
+				<p>葡萄柠檬茶</p>
+				<p>抹茶柠檬茶</p>
+				<p>轻咖椰子水</p>
+	        </div>
+	        <p onclick="toggleSubDropdown('subDropdown_ruixingkafei_2')">生酪拿铁</p>
+	        <div class="sub-dropdown" id="subDropdown_ruixingkafei_2">
+	            <p>新西兰生酪拿铁</p>
+	        </div>
+			<p onclick="toggleSubDropdown('subDropdown_ruixingkafei_3')">冬日暖咖</p>
+			<div class="sub-dropdown" id="subDropdown_ruixingkafei_3">
+			    <p>新西兰生酪拿铁</p>
+				<p>费尔岛拿铁</p>
+				<p>烤椰拿铁</p>
+				<p>生椰美式</p>
+				<p>太妃榛香拿铁</p>
+				<p>小黄油拿铁</p>
+				<p>橙C美式</p>
+				<p>小黄油美式</p>
+				<p>苹果C美式</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_ruixingkafei_4')">小黄油系列</p>
+			<div class="sub-dropdown" id="subDropdown_ruixingkafei_4">
+			    <p>小黄油拿铁</p>
+			    <p>小黄油美式</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_ruixingkafei_5')">生椰家族</p>
+			<div class="sub-dropdown" id="subDropdown_ruixingkafei_5">
+			    <p>生椰拿铁</p>
+				<p>烤椰拿铁</p>
+				<p>生椰美式</p>
+			    <p>生椰丝绒拿铁</p>
+				<p>生椰锡兰轻乳茶</p>
+			    <p>陨石生椰拿铁</p>
+			    <p>抹荼好喝椰</p>
+			    <p>冰吸生椰拿铁</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_ruixingkafei_6')">美式家族</p>
+			<div class="sub-dropdown" id="subDropdown_ruixingkafei_6">
+			    <p>标准美式</p>
+			    <p>加浓美式</p>
+				<p>生椰美式</p>
+				<p>小黄油美式</p>
+				<p>苹果C美式</p>
+				<p>橙C美式</p>
+				<p>柠C美式</p>
+				<p>柚C美式</p>
+				<p>葡萄冰萃美式</p>
+				<p>莓果气泡美式</p>
+				<p>西梅美式</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_ruixingkafei_7')">丝绒拿铁</p>
+			<div class="sub-dropdown" id="subDropdown_ruixingkafei_7">
+			    <p>丝绒拿铁</p>
+			    <p>青苹果丝绒拿铁</p>
+			    <p>生椰丝绒拿铁</p>
+			    <p>香草丝绒拿铁</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_ruixingkafei_8')">大师咖啡</p>
+			<div class="sub-dropdown" id="subDropdown_ruixingkafei_8">
+			    <p>拿铁</p>
+			    <p>燕麦拿铁</p>
+			    <p>香草拿铁</p>
+			    <p>焦糖玛奇朵</p>
+			    <p>卡布奇诺</p>
+			    <p>摩卡</p>
+				<p>陨石拿铁</p>
+				<p>精萃澳瑞白</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_ruixingkafei_9')">燕麦奶专区</p>
+			<div class="sub-dropdown" id="subDropdown_ruixingkafei_9">
+			    <p>燕麦拿铁</p>
+				<p>太妃榛香燕麦拿铁</p>
+				<p>南瓜燕麦拿铁</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_ruixingkafei_10')">轻乳茶</p>
+			<div class="sub-dropdown" id="subDropdown_ruixingkafei_10">
+			    <p>生椰锡兰轻乳茶</p>
+			    <p>轻轻茉莉</p>
+			    <p>轻轻乌龙</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_ruixingkafei_11')">中国茶咖</p>
+			<div class="sub-dropdown" id="subDropdown_ruixingkafei_11">
+			    <p>乌龙拿铁</p>
+			    <p>茉莉花香拿铁</p>
+			    <p>茉莉海盐拿铁</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_ruixingkafei_12')">柠檬茶</p>
+			<div class="sub-dropdown" id="subDropdown_ruixingkafei_12">
+			    <p>轻咖柠檬茶</p>
+			    <p>葡萄柠檬茶</p>
+			    <p>抹茶柠檬茶</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_ruixingkafei_13')">SOE小黑杯</p>
+			<div class="sub-dropdown" id="subDropdown_ruixingkafei_13">
+			    <p>瑰夏•美式</p>
+			    <p>瑰夏•Dirty</p>
+			    <p>瑰夏•拿铁</p>
+			    <p>瑰夏•澳瑞白</p>
+			    <p>耶加雪菲•美式</p>
+			    <p>耶加•Dirty</p>
+			    <p>耶加雪菲•拿铁</p>
+			    <p>耶加雪菲•澳瑞白</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_ruixingkafei_14')">厚乳拿铁</p>
+			<div class="sub-dropdown" id="subDropdown_ruixingkafei_14">
+			    <p>抹茶拿铁</p>
+			    <p>深烘拿铁</p>
+			    <p>厚乳拿铁</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_ruixingkafei_15')">瑞納冰®</p>
+			<div class="sub-dropdown" id="subDropdown_ruixingkafei_15">
+			    <p>塞纳莓莓瑞纳冰</p>
+			    <p>抹荼瑞纳冰</p>
+			    <p>巧克力瑞纳冰</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_ruixingkafei_16')">特色酒咖</p>
+			<div class="sub-dropdown" id="subDropdown_ruixingkafei_16">
+			    <p>酱香拿铁</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_ruixingkafei_17')">不喝咖啡</p>
+			<div class="sub-dropdown" id="subDropdown_ruixingkafei_17">
+			    <p>柚C冰茶</p>
+			    <p>橙C冰茶</p>
+				<p>纯牛奶</p>
+				<p>一杯黑巧</p>
+				<p>巧克力瑞纳冰</p>
+				<p>抹荼瑞纳冰</p>
+				<p>抹茶好喝椰</p>
+				<p>抹茶拿铁</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_ruixingkafei_15')">经典饮品</p>
+			<div class="sub-dropdown" id="subDropdown_ruixingkafei_15">
+			    <p>纯牛奶</p>
+			    <p>一杯黑巧</p>
+			</div>
+	    </div>
+	    
+	    <!-- S组 -->
+	    <div class="section-title">S</div>
+	    <div class="icon" onclick="toggleDropdown('dropdown_snackpaper')">
+	        <img src="icon/IMG_8147.PNG" alt="SnackPaper">
+	        <p>SnackPaper</p>
+	    </div>
+	    <div class="dropdown-menu" id="dropdown_snackpaper">
+	        <p onclick="toggleSubDropdown('subDropdown_snackpaper_1')">ling² kwong</p>
+	        <div class="sub-dropdown" id="subDropdown_snackpaper_1">
+	            <p>港风经典牛乳茶</p>
+	            <p>茉莉奶白牛乳茶</p>
+	        </div>
+	    </div>
+	    
+	    <!-- X组 -->
+	    <div class="section-title">X</div>
+	    <div class="icon" onclick="toggleDropdown('dropdown_xicha')">
+	        <img src="icon/IMG_8107.PNG" alt="喜茶">
+	        <p>喜茶</p>
+	    </div>
+	    <div class="dropdown-menu" id="dropdown_xicha">
+	        <p onclick="toggleSubDropdown('subDropdown_xicha_1')">草间弥生love&life</p>
+	        <div class="sub-dropdown" id="subDropdown_xicha_1">
+	            <p>豆豆波波茶</p>
+	            <p>双豆波波茶</p>
+	        </div>
+			<p onclick="toggleSubDropdown('subDropdown_xicha_2')">超级植物茶</p>
+			<div class="sub-dropdown" id="subDropdown_xicha_2">
+			    <p>红莱头美颜瓶</p>
+				<p>纤体瓶系列</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_xicha_3')">清爽真果茶</p>
+			<div class="sub-dropdown" id="subDropdown_xicha_3">
+				<p>多肉桃李</p>
+				<p>鸭喜香轻柠茶</p>
+				<p>绿妍轻柠茶</p>
+			    <p>多肉葡萄</p>
+			    <p>轻芝多肉葡萄</p>
+			    <p>有喜柿椰</p>
+			    <p>喜柿多多</p>
+			    <p>椰椰芒芒</p>
+			    <p>芒芒甘露</p>
+			    <p>多肉莓莓桃</p>
+			    <p>多肉芒芒</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_xicha_4')">茗茶</p>
+			<div class="sub-dropdown" id="subDropdown_xicha_4">
+			    <p>小奶沫系列</p>
+			    <p>芝芝绿妍茶后</p>
+			    <p>纯绿妍茶后</p>
+			    <p>双城•桂花酿</p>
+			    <p>金凤茶王™（焙火香）</p>
+			    <p>抹茉</p>
+			    <p>浓抹绿妍</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_xicha_5')">浓郁真乳茶</p>
+			<div class="sub-dropdown" id="subDropdown_xicha_5">
+			    <p>烤黑糖波波真乳茶</p>
+			    <p>黑糖波波真乳茶</p>
+			    <p>水牛乳双拼波波</p>
+			    <p>烤黑糖波波牛乳</p>
+			    <p>黑糖波波真牛乳</p>
+			    <p>焙茶波波冰</p>
+			    <p>波波真乳茶</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_xicha_6')">经典</p>
+			<div class="sub-dropdown" id="subDropdown_xicha_6">
+			    <p>芝芝多肉葡萄</p>
+			    <p>芝芝芒芒</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_xicha_7')">千目抹茶</p>
+			<div class="sub-dropdown" id="subDropdown_xicha_7">
+			    <p>芝芝抹茶</p>
+			    <p>水牛乳双拼抹茶</p>
+				<p>抹茶·水牛乳</p>
+				<p>三倍厚抹</p>
+			</div>
+	    </div>
+	    
+	    <div class="icon" onclick="toggleDropdown('dropdown_starbucks')">
+	        <img src="icon/IMG_8128.PNG" alt="星巴克">
+	        <p>星巴克</p>
+	    </div>
+	    <div class="dropdown-menu" id="dropdown_starbucks">
+	        <p onclick="toggleSubDropdown('subDropdown_starbucks_1')">经典咖啡</p>
+	        <div class="sub-dropdown" id="subDropdown_starbucks_1">
+	            <p>太妃榛果拿铁</p>
+	            <p>黄油曲奇摩卡</p>
+	            <p>黄油曲奇抹茶拿铁</p>
+	            <p>太妃榛果星冰乐</p>
+	            <p>清柠玛奇朵</p>
+	            <p>椰椰玛奇朵</p>
+	            <p>椰子丝绒燕麦拿铁</p>
+	            <p>馥芮白®</p>
+	            <p>拿铁</p>
+	            <p>美式咖啡</p>
+	            <p>焦糖玛奇朵</p>
+	            <p>燕麦拿铁</p>
+	            <p>燕麦焦糖玛奇朵</p>
+	            <p>巴旦木拿铁</p>
+	            <p>榛果风味巴旦木拿铁</p>
+	            <p>大溪地香草风情巴旦木拿铁</p>
+	            <p>香草风味拿铁</p>
+	            <p>榛果风味拿铁</p>
+	            <p>浓郁咖啡拿铁</p>
+	            <p>摩卡</p>
+				<p>金烘馥芮白</p>
+				<p>金烘焦糖玛奇朵</p>
+				<p>金烘香草风味巴旦木拿铁</p>
+				<p>金烘美式咖啡</p>
+				<p>金烘拿铁</p>
+				<p>冷萃冰咖啡</p>
+				<p>大溪地风情云冷萃</p>
+				<p>朗姆巧克力风味慕斯浓缩</p>
+				<p>海盐焦糖慕斯浓缩</p>
+	        </div>
+	        <p onclick="toggleSubDropdown('subDropdown_starbucks_2')">冰震浓缩</p>
+	        <div class="sub-dropdown" id="subDropdown_starbucks_2">
+	            <p>星巴克海盐焦糖冰震浓缩</p>
+	            <p>星巴克大溪地香草风情冰震浓缩</p>
+	            <p>星巴克椰椰双打冰震浓缩</p>
+	        </div>
+			<p onclick="toggleSubDropdown('subDropdown_starbucks_3')">\浓/系列</p>
+			<div class="sub-dropdown" id="subDropdown_starbucks_3">
+			    <p>椰香可芮朵</p>
+			    <p>可芮朵</p>
+			    <p>红丝绒可芮朵</p>
+			    <p>浓椰馥芮白</p>
+			    <p>可可奇诺</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_starbucks_4')">植物基咖啡</p>
+			<div class="sub-dropdown" id="subDropdown_starbucks_4">
+			    <p>巴旦木拿铁</p>
+			    <p>大溪地香草风情巴旦木拿铁</p>
+			    <p>榛果风味巴旦木拿铁</p>
+			    <p>燕麦拿铁</p>
+			    <p>椰子丝绒燕麦拿铁</p>
+			    <p>燕麦焦糖玛奇朵</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_starbucks_5')">星巴克生咖</p>
+			<div class="sub-dropdown" id="subDropdown_starbucks_5">
+			    <p>粉莓柠力生咖</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_starbucks_6')">低因推荐</p>
+			<div class="sub-dropdown" id="subDropdown_starbucks_6">
+			    <p>低因萃取香草风味巴旦木拿铁</p>
+			    <p>低因萃取美式咖啡</p>
+			    <p>低因萃取卡布奇诺</p>
+			    <p>低因萃取椰子丝绒燕麦拿铁</p>
+				<p>低因萃取香草风味拿铁</p>
+				<p>低因萃取榛果风味拿铁</p>
+				<p>低因萃取摩卡</p>
+				<p>低因萃取拿铁</p>
+				<p>低因萃取太妃榛果拿铁</p>
+				<p>低因萃取黄油曲奇摩卡</p>
+				<p>低因萃取焦糖玛奇朵</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_starbucks_7')">星冰乐®</p>
+			<div class="sub-dropdown" id="subDropdown_starbucks_7">
+			    <p>摩卡可可碎片星冰乐®</p>
+			    <p>焦糖咖啡星冰乐®</p>
+			    <p>摩卡星冰乐®</p>
+			    <p>榛果风味摩卡星冰乐®</p>
+			    <p>浓缩咖啡星冰乐®</p>
+			    <p>抹茶星冰乐®</p>
+			    <p>抹茶可可碎片星冰乐®</p>
+			    <p>香草风味星冰乐®</p>
+			    <p>芒果西番莲果茶星冰乐®</p>
+			    <p>巧克力风味星冰乐®</p>
+			    <p>奶油星冰乐®</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_starbucks_8')">茶瓦纳</p>
+			<div class="sub-dropdown" id="subDropdown_starbucks_8">
+			    <p>黄油曲奇抹茶拿铁</p>
+				<p>椰子燕麦抹茶拿铁</p>
+				<p>摩卡抹茶拿铁</p>
+				<p>榛果风味红茶拿铁</p>
+				<p>烤红薯风味茶拿铁</p>
+			    <p>燕麦抹茶拿铁</p>
+			    <p>抹茶拿铁</p>
+			    <p>红茶拿铁</p>
+			    <p>红茶咖啡拿铁鸳鸯</p>
+			    <p>晚霞柠檬茶</p>
+			    <p>冰摇桃桃乌龙茶</p>
+			    <p>冰摇红莓黑加仑茶</p>
+			    <p>冰摇柠檬茶</p>
+			    <p>英式早餐红茶</p>
+			    <p>碧螺春绿茶</p>
+			    <p>金萱乌龙茶</p>
+			    <p>伯爵调味红茶</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_starbucks_9')">巧克力&其他饮品</p>
+			<div class="sub-dropdown" id="subDropdown_starbucks_9">
+			    <p>经典巧克力饮品</p>
+			    <p>原味蒸气奶</p>
+			    <p>香草味蒸气奶</p>
+			    <p>可可蒸气奶</p>
+			</div>
+	    </div>
+	    
+	    <!-- Y组 -->
+	    <div class="section-title">Y</div>
+	    <div class="icon" onclick="toggleDropdown('dropdown_yeye')">
+	        <img src="icon/IMG_8187.PNG" alt="爷爷不泡茶">
+	        <p>爷爷不泡茶</p>
+	    </div>
+	    <div class="dropdown-menu" id="dropdown_yeye">
+	        <p onclick="toggleSubDropdown('subDropdown_yeye_1')">孝感米酿</p>
+	        <div class="sub-dropdown" id="subDropdown_yeye_1">
+	            <p>荔枝冰酿</p>
+	            <p>杨梅冰酿</p>
+	        </div>
+	        <p onclick="toggleSubDropdown('subDropdown_yeye_2')">非遗红糖</p>
+	        <div class="sub-dropdown" id="subDropdown_yeye_2">
+	            <p>红糖黑珍珠</p>
+	            <p>花魁红糖黑珍珠</p>
+	            <p>大吉岭红糖珍珠</p>
+	        </div>
+			<p onclick="toggleSubDropdown('subDropdown_yeye_3')">东方香茶</p>
+			<div class="sub-dropdown" id="subDropdown_yeye_3">
+			    <p>咸宁桂花</p>
+			    <p>空山栀子</p>
+			    <p>白兰玉露</p>
+			    <p>武汉茉莉</p>
+			    <p>花魁单丛</p>
+			    <p>重瓣玫瑰</p>
+			    <p>春回•樱花作</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_yeye_4')">花香果奶</p>
+			<div class="sub-dropdown" id="subDropdown_yeye_4">
+			    <p>桂花雪梨</p>
+			    <p>香柚栀子</p>
+			    <p>白兰青提</p>
+			    <p>桃桃双皮奶</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_yeye_5')">花香果茶</p>
+			<div class="sub-dropdown" id="subDropdown_yeye_5">
+			    <p>初恋玫瑰青提</p>
+			    <p>花魁柠檬</p>
+			    <p>茉莉柠檬</p>
+			    <p>栀子柠檬</p>
+			    <p>爆炸杨梅</p>
+			    <p>花香杨枝甘露</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_yeye_6')">花香纯茶</p>
+			<div class="sub-dropdown" id="subDropdown_yeye_6">
+			    <p>茉莉</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_yeye_7')">雪顶东方香</p>
+			<div class="sub-dropdown" id="subDropdown_yeye_7">
+			    <p>花魁白雪</p>
+			    <p>栀子白雪</p>
+			    <p>雪顶金桂</p>
+			    <p>江城飘雪</p>
+			    <p>白兰雅雪</p>
+			</div>
+	    </div>
+	    <div class="icon" onclick="toggleDropdown('dropdown_yidiandian')">
+	        <img src="icon/IMG_8120.PNG" alt="一点点">
+	        <p>一点点</p>
+	    </div>
+        <div class="dropdown-menu" id="dropdown_yidiandian">
+            <p onclick="toggleSubDropdown('subDropdown_yidiandian_1')">新品上市</p>
+            <div class="sub-dropdown" id="subDropdown_yidiandian_1">
+                <p>粉条奶乌</p>
+                <p>六窨茉莉奶绿</p>
+				<p>六窨茉莉绿茶</p>
+				<p>焙茶奶茶</p>
+            </div>
+            <p onclick="toggleSubDropdown('subDropdown_yidiandian_2')">人气推荐</p>
+            <div class="sub-dropdown" id="subDropdown_yidiandian_2">
+                <p>四季奶青</p>
+                <p>波霸奶茶</p>
+                <p>红茶玛奇朵</p>
+                <p>冰淇淋红茶</p>
+                <p>波霸奶绿</p>
+                <p>抹茶</p>
+                <p>A2牛乳红茶</p>
+                <p>葡萄柚绿</p>
+            </div>
+			<p onclick="toggleSubDropdown('subDropdown_yidiandian_3')">花果奶茶</p>
+			<div class="sub-dropdown" id="subDropdown_yidiandian_3">
+			    <p>苹果奶绿</p>
+				<p>奶绿装芒</p>
+				<p>QQ美莓奶茶</p>
+				<p>芭乐奶绿</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_yidiandian_4')">奶茶自由配</p>
+			<div class="sub-dropdown" id="subDropdown_yidiandian_4">
+			    <p>奶茶</p>
+			    <p>乌龙奶茶</p>
+			    <p>薄荷奶绿</p>
+			    <p>藏青盐咸奶绿</p>
+			    <p>阿华田</p>
+			    <p>抹茶奶茶</p>
+			    <p>椰奶奶青</p>
+			    <p>混珠奶茶</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_yidiandian_5')">点口感</p>
+			<div class="sub-dropdown" id="subDropdown_yidiandian_5">
+			    <p>茶冻薄荷绿</p>
+			    <p>招牌四季春＋珍波椰</p>
+			    <p>椰果奶茶</p>
+			    <p>小珍珠奶茶</p>
+			    <p>布丁奶茶</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_yidiandian_6')">好茶自由配</p>
+			<div class="sub-dropdown" id="subDropdown_yidiandian_6">
+			    <p>桂花冰淇淋乌龙</p>
+			    <p>藏青盐冰淇淋乌龙</p>
+			    <p>锦鲤红茶</p>
+			    <p>清香乌龙茶</p>
+			    <p>四季春茶</p>
+			    <p>养乐多绿</p>
+			    <p>桂花乌龙</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_yidiandian_7')">点A2牛乳</p>
+			<div class="sub-dropdown" id="subDropdown_yidiandian_7">
+			    <p>A2牛乳四季春茶</p>
+			    <p>A2牛乳抹茶</p>
+			    <p>草莓A2牛乳绿茶</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_yidiandian_8')">点果茶</p>
+			<div class="sub-dropdown" id="subDropdown_yidiandian_8">
+			    <p>苹果茉莉绿</p>
+			    <p>柠檬红</p>
+			    <p>金桔柠檬绿</p>
+			    <p>茶冻草莓红茶</p>
+			    <p>芒果青</p>
+			    <p>望梅绿</p>
+			    <p>芭乐绿</p>
+			    <p>杨枝甘露轻茶版</p>
+			</div>
+			<p onclick="toggleSubDropdown('subDropdown_yidiandian_9')">0茶区</p>
+			<div class="sub-dropdown" id="subDropdown_yidiandian_9">
+			    <p>杨枝甘露</p>
+			    <p>草莓甘露</p>
+			    <p>葡萄柚汁</p>
+			    <p>柠檬汁</p>
+			    <p>金桔柠檬</p>
+			    <p>柠檬养乐多</p>
+			</div>
+        </div>
+	</div>
+	
+	<script>
+        // 用于追踪上一次点击的一级菜单
+        let lastOpenedMenuId = null;
+        
+        // 切换一级下拉菜单显示状态
+        function toggleDropdown(menuId) {
+            const allDropdowns = document.querySelectorAll('.dropdown-menu');
+        
+            const dropdownMenu = document.getElementById(menuId);
+            const iconElement = dropdownMenu.previousElementSibling; // 获取对应的图标元素
+        
+            if (lastOpenedMenuId === menuId) {
+                // 如果再次点击同一菜单，则关闭一级和二级菜单
+                dropdownMenu.style.display = 'none';
+                iconElement.classList.remove('active'); // 移除激活背景颜色
+                lastOpenedMenuId = null;
+        
+                // 关闭所有二级菜单
+                const allSubDropdowns = document.querySelectorAll('.sub-dropdown');
+                allSubDropdowns.forEach(subMenu => {
+                    subMenu.style.display = 'none';
+                });
+            } else {
+                // 隐藏其他所有下拉菜单并移除所有图标的激活背景
+                allDropdowns.forEach(menu => {
+                    menu.style.display = 'none';
+                    menu.previousElementSibling.classList.remove('active'); // 移除激活背景颜色
+                });
+        
+                // 打开当前菜单并设置激活背景
+                dropdownMenu.style.display = 'block';
+                iconElement.classList.add('active'); // 添加激活背景颜色
+        
+                // 更新状态
+                lastOpenedMenuId = menuId;
+        
+                // 关闭所有二级菜单（避免残留）
+                const allSubDropdowns = document.querySelectorAll('.sub-dropdown');
+                allSubDropdowns.forEach(subMenu => {
+                    subMenu.style.display = 'none';
+                });
+            }
+        }
+        
+        // 切换二级下拉菜单显示状态
+        function toggleSubDropdown(subMenuId) {
+            const subDropdownMenu = document.getElementById(subMenuId);
+        
+            // 切换显示状态
+            if (subDropdownMenu.style.display === 'block') {
+                subDropdownMenu.style.display = 'none';
+            } else {
+                subDropdownMenu.style.display = 'block';
+            }
+        }
+		
+		// 获取 URL 查询参数
+		function getQueryParam(param) {
+		   const urlParams = new URLSearchParams(window.location.search);
+		   return urlParams.get(param);
+		}
+		
+		// 自动打开菜单并滚动到可视范围
+		function autoOpenMenu() {
+		   const menuId = getQueryParam('menu'); // 获取目标菜单 ID
+		   if (menuId) {
+		       const dropdownMenu = document.getElementById(menuId);
+		       if (dropdownMenu) {
+		           // 打开一级菜单
+		           dropdownMenu.style.display = 'block';
+		
+		           // 设置图标为激活状态
+		           const iconElement = dropdownMenu.previousElementSibling;
+		           if (iconElement) {
+		               iconElement.classList.add('active');
+		           }
+		
+		           // 延迟滚动，确保菜单已完全渲染
+		           setTimeout(() => {
+		               iconElement.scrollIntoView({
+		                   behavior: 'smooth', // 平滑滚动
+		                   block: 'center'     // 滚动到屏幕中间
+		               });
+		           }, 100); // 延迟 100 毫秒
+		       }
+		   }
+		}
+		
+		// 在页面加载完成后执行
+		document.addEventListener('DOMContentLoaded', autoOpenMenu);
+	</script>
+</body>
+</html>
