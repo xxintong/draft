@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get My Juice.</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding-bottom: 60px; 
+        }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 85px;
+            background-color: #e0e0e0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid #ddd;
+        }
+        .bottom-nav a {
+            text-decoration: none;
+            color: #666666; /* 初始颜色 */
+            font-size: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+			margin-bottom:20px;
+            transition: color 0.3s;
+			-webkit-tap-highlight-color: rgba(0,0,0,0); /* 透明 */
+        }
+        .bottom-nav a img {
+            width: 24px;
+            height: 24px;
+            filter: brightness(0) saturate(100%) invert(40%); /* 默认颜色为 #666666 */
+            transition: filter 0.3s;
+        }
+        .bottom-nav a.active img {
+            filter: brightness(0) saturate(100%) invert(0%); /* 点击后的颜色为 #000000 */
+        }
+        .bottom-nav a.active {
+            color: #000000;
+        }
+		.carousel-container {
+		    width: 100%;
+		    max-width: 600px;
+	        overflow: hidden;	            
+			position: relative;
+		    border-radius: 5px;
+		    margin: 10px auto;
+		}
+		
+		.carousel {
+		    display: flex;
+		    transition: transform 0.5s ease;
+			
+		}
+		
+		.carousel img {
+		    min-width: 100%;
+			height:250px;
+	        object-fit: cover;
+            object-position: top;
+        }
+		
+		/* 小圆点指示器样式 */
+		.carousel-indicators {
+		    position: absolute;
+		    bottom: 10px;
+	        left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+        }
+		
+		.carousel-indicators span {
+            width: 8px;
+	        height: 8px;
+            background-color: #ddd;
+	        border-radius: 50%;
+	        cursor: pointer;
+		}
+		
+		.carousel-indicators span.active {
+		    background-color: #333;
+		}
+		
+		.carousel .slide {
+		    width: 100%; /* 确保每个 slide 占据容器的全部宽度 */
+		    height: 100%;
+		    background-size: cover;
+		    background-repeat: no-repeat;
+		    background-position: center;
+		    flex-shrink: 0; /* 防止 slide 收缩 */
+		}
+		 /* 设置每张图片的背景 */
+		.carousel .slide1 {
+		    background-image: url('images/banner1.jpg');
+		    background-position: center top;
+		}
+		
+		.carousel .slide2 {
+		    background-image: url('images/banner2.jpg');
+		    background-position: center top;
+		}
+		
+		.carousel .slide3 {
+		    background-image: url('images/banner3.jpg');
+		    background-position: center center;
+		}
+			
+		/* 两个卡片 */	
+        .card-section {
+            width: 100%;
+            max-width: 650px;
+            
+            padding: 15px 0;
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+			margin-top: -10px;
+        }
+
+        .cards {
+            display: flex;
+            justify-content: space-between;
+			gap:20px;
+            width: 100%;
+        }
+
+        .divider {
+            width: 1px;
+            background-color: #ddd;
+            position: absolute;
+            top: 20px;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .card {
+            width: 49%; /* 每个卡片占一半宽度，留出间隙 */
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s;
+            position: relative;
+            text-decoration: none;
+            color: #333;
+			margin-top: -5px;
+			-webkit-tap-highlight-color: rgba(0,0,0,0); /* 透明 */
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .card img {
+            width: 90%;
+			height:180px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            color: #333;
+            margin: 8px 0 5px;
+        }
+
+        .tag1 {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #bfbfbf; 
+            color: #333333;
+            padding: 2px 8px;
+            font-size: 12px;
+            border-radius: 5px;
+        }
+        .tag2 {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #E6C3A1;
+            color: #333333;
+            padding: 2px 8px;
+            font-size: 12px;
+            border-radius: 5px;
+        }
+
+        /*四个按钮*/
+        .button-container {
+                    display: flex;
+                    gap: 15px;
+                    justify-content: center;
+                    padding: 0;
+					gap:0;
+					background-color:transparent;
+                }
+				
+		
+        
+        .button {
+            background-color:transparent;
+            border: none;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .button-label {
+            font-size: 15px; 
+            color: #333; 
+            margin-top: 10px; 
+        }
+		
+        .modal-bg {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            width: 80%;
+            max-width: 300px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .close-btn {
+            background-color: #000;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 底部导航栏 -->
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-link active">
+            <img src="images/shouye.svg" alt="首页">
+            <span>首页</span>
+        </a>
+        <a href="search.html" class="nav-link">
+            <img src="images/sousuo.svg" alt="分类">
+            <span>分类</span>
+        </a>
+        <a href="brand.html" class="nav-link">
+            <img src="images/zhenzhunaicha.svg" alt="奶茶">
+            <span>品牌</span>
+        </a>
+        <a href="random.html" class="nav-link">
+            <img src="images/chouxuan.svg" alt="随机">
+            <span>随机</span>
+        </a>
+        
+    </div>
+	
+	<!--照片展示-->
+	<div class="carousel-container">
+	    <div class="carousel">
+	        <img src="images/IMG_9385.jpeg" alt="活动1">
+	        <img src="images/IMG_6815.jpeg" alt="活动2">
+	        <img src="images/IMG_4846.jpeg" alt="活动3">
+	    </div>
+	    <!-- 小圆点指示器 -->
+	    <div class="carousel-indicators">
+	        <span data-index="0" class="active"></span>
+	        <span data-index="1"></span>
+	        <span data-index="2"></span>
+	    </div>
+	</div>
+	<div class="card-section">
+	    <!-- 中间的竖线 -->
+	    <div class="divider"></div>
+	<!-- 双卡片部分 -->
+	    <div class="cards">
+	        <!-- 第一张卡片 -->
+	        <a href="search.html" class="card">
+	            <div class="tag1">分类</div>
+	            <img src="images/5581730728388_.pic.jpg" alt="Drink What?">
+	            <h3>Drink What?</h3>
+	        </a>
+	        
+	        <!-- 第二张卡片 -->
+	        <a href="brand.html" class="card">
+	            <div class="tag2">品牌</div>
+	            <img src="images/IMG_3630.JPG" alt="Get My Juice">
+	            <h3>Get My Juice.</h3>
+	        </a>
+	    </div>
+	</div>
+	
+	<!-- 四个按钮部分 -->
+	<div class="button-container">
+	    <button class="button" onclick="window.location.href='random.html'">
+	        <img src="images/WechatIMG570.jpg" alt="抓娃娃" style="width: 82px; height: 80px;">
+	        <p class="button-label">奶茶机</p>
+	    </button>
+	    <button class="button" onclick="openModal('麦咖啡')">
+	        <img src="images/WechatIMG571.jpg" alt="麦咖啡" style="width: 80px; height: 80px;">
+	        <p class="button-label">麦咖啡</p>
+	    </button>
+	    <button class="button" onclick="openModal('限时领券')">
+	        <img src="images/WechatIMG572.jpg" alt="限时领券" style="width: 80px; height: 80px;">
+	        <p class="button-label">限时领券</p>
+	    </button>
+	    <button class="button" onclick="openModal('Tips')">
+	        <img src="images/WechatIMG573.jpg" alt="Tips" style="width: 80px; height: 80px;">
+	        <p class="button-label">Tips</p>
+	    </button>
+	</div>
+	
+	<div class="modal-bg" id="modalBg">
+	    <div class="modal-content">
+	        <h2 id="modalTitle"></h2>
+	        <p>ppp人，不能及时更新，凑合用🤲🏻</p>
+	        <button class="close-btn" onclick="closeModal()">关闭</button>
+	    </div>
+	</div>
+	</div>
+
+	<script>
+	    // JavaScript 实现轮播图自动播放
+	    const carousel = document.querySelector('.carousel');
+	    const indicators = document.querySelectorAll('.carousel-indicators span');
+	    let currentIndex = 0;
+	
+	    function showSlide(index) {
+	        // 更新轮播图位置
+	        carousel.style.transform = `translateX(-${index * 100}%)`;
+	        
+	        // 更新小圆点指示器的激活状态
+	        indicators.forEach(indicator => indicator.classList.remove('active'));
+	        indicators[index].classList.add('active');
+	    }
+	
+	    function nextSlide() {
+	        currentIndex = (currentIndex + 1) % indicators.length;
+	        showSlide(currentIndex);
+	    }
+	
+	    // 自动播放轮播图
+	    let slideInterval = setInterval(nextSlide, 3000);
+	
+	    // 添加指示器点击事件
+	    indicators.forEach(indicator => {
+	        indicator.addEventListener('click', () => {
+	            clearInterval(slideInterval); // 停止自动播放
+	            currentIndex = parseInt(indicator.getAttribute('data-index'));
+	            showSlide(currentIndex);
+	            slideInterval = setInterval(nextSlide, 3000); // 重启自动播放
+	        });
+	    });
+        
+	    function openModal(title) {
+	        document.getElementById('modalTitle').innerText = title;
+	        document.getElementById('modalBg').style.display = 'flex';
+	    }
+	
+	    function closeModal() {
+	        document.getElementById('modalBg').style.display = 'none';
+	    }
+	</script>
+
+</body>
+</html>
